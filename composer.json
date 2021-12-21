@@ -1,5 +1,5 @@
 {
-    "name": "kyrne/whisper",
+    "name": "davwheat/whisper",
     "description":  "Private Messaging for Flarum.",
     "keywords": [
         "flarum",
@@ -12,11 +12,16 @@
     "type": "flarum-extension",
     "license": "MIT",
     "authors": [
-        {
-          "name": "Charlie Kern",
-          "email": "Charlie.K@redevs.org",
-          "homepage": "https://redevs.org"
-        }
+      {
+        "name": "Charlie Kern",
+        "email": "Charlie.K@redevs.org",
+        "homepage": "https://redevs.org"
+      },
+      {
+        "name": "David Wheatleu",
+        "email": "hi@davwheat.dev",
+        "homepage": "https://davwheat.dev"
+      }
     ],
     "support": {
         "issues": "https://github.com/KyrneDev/whisper/issues",
