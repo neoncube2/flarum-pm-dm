@@ -23,6 +23,7 @@ littlecxm-whisper:
         messaging setup.
       already: 'You already have a conversation with {username}.'
     chat:
+      messages_single: New conversation
       messages_multiple: "{count} total messages"
       chat_with: 'Chat with {username}'
       start: Start Conversation
