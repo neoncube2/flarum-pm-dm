@@ -4,26 +4,24 @@
 namespace Kyrne\Whisper;
 
 use Flarum\Api\Controller;
-use Flarum\Extend;
-use Flarum\Formatter\Event\Configuring;
-use Flarum\User\User;
-use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Api\Serializer\CurrentUserSerializer;
+use Flarum\Api\Serializer\ForumSerializer;
+use Flarum\Extend;
+use Flarum\User\User;
 use Kyrne\Whisper\Api\Controllers;
 use Kyrne\Whisper\Api\Serializers\ConversationRecipientSerializer;
-use Kyrne\Whisper\Api\Serializers\ConversationSerializer;
 
 return [
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js'),
+        ->js(__DIR__ . '/js/dist/admin.js'),
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist/forum.js')
-        ->css(__DIR__.'/resources/less/extension.less')
+        ->js(__DIR__ . '/js/dist/forum.js')
+        ->css(__DIR__ . '/resources/less/extension.less')
         ->route('/whisper/messages/{id}', 'whisper.messages')
         ->route('/whisper/conversations', 'whisper.conversation'),
-    new Extend\Locales(__DIR__.'/resources/locale'),
+    new Extend\Locales(__DIR__ . '/resources/locale'),
     (new Extend\Model(User::class))
-        ->hasMany('conversations' ,ConversationUser::class, 'user_id'),
+        ->hasMany('conversations', ConversationUser::class, 'user_id'),
     (new Extend\Routes('api'))
         ->get('/whisper/conversations', 'whisper.conversations.index', Controllers\ListConversationsController::class)
         ->get('/whisper/messages/{id}', 'whisper.messages.list', Controllers\ListMessagesController::class)
@@ -47,8 +45,8 @@ return [
         }),
 
     (new Extend\Settings())
-        ->serializeToForum('whisperReturnKey', 'kyrne-whisper.return_key', function ($value) {
-            return (bool) $value;
+        ->serializeToForum('whisperReturnKey', 'littlecxm-whisper.return_key', function ($value) {
+            return (bool)$value;
         }),
     (new Extend\ApiSerializer(CurrentUserSerializer::class))
         ->hasMany('conversations', ConversationRecipientSerializer::class),

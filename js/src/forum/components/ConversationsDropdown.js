@@ -5,7 +5,7 @@ import ConversationsList from './ConversationsList';
 
 export default class ConversationsDropdown extends NotificationsDropdown {
   static initAttrs(attrs) {
-    attrs.label ||= attrs.label || app.translator.trans('kyrne-whisper.forum.dropdown.tooltip');
+    attrs.label ||= attrs.label || app.translator.trans('littlecxm-whisper.forum.dropdown.tooltip');
     attrs.icon ||= 'fas fa-comment-alt';
     attrs.className = 'MessagesDropdown NotificationsDropdown';
 
@@ -19,11 +19,7 @@ export default class ConversationsDropdown extends NotificationsDropdown {
   }
 
   getMenu() {
-    return (
-      <form className={'Dropdown-menu ' + this.attrs.menuClassName}>
-        {!!this.showing && <ConversationsList mobile={false}/>}
-      </form>
-    );
+    return <form className={'Dropdown-menu ' + this.attrs.menuClassName}>{!!this.showing && <ConversationsList mobile={false} />}</form>;
   }
 
   goToRoute() {

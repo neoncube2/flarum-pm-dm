@@ -48,8 +48,8 @@ export default class ConversationsList extends Component {
                 disabled: !app.forum.attribute('canMessage'),
               },
               app.forum.attribute('canMessage')
-                ? app.translator.trans('kyrne-whisper.forum.chat.start')
-                : app.translator.trans('kyrne-whisper.forum.chat.cant_start')
+                ? app.translator.trans('littlecxm-whisper.forum.chat.start')
+                : app.translator.trans('littlecxm-whisper.forum.chat.cant_start')
             )}
             {!!app.session.user.conversations().length && (
               <ul className="ConversationsList-list">

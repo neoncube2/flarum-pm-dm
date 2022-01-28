@@ -1,0 +1,28 @@
+littlecxm-whisper:
+  admin:
+    settings:
+      return_key: 按回车键发送私信
+      title: Whisper 设置
+    permissions:
+      start_label: 发送私信
+  forum:
+    dropdown:
+      tooltip: 私信
+    modal:
+      title: 新私信
+      help: 输入用户名开始聊天
+      help_start: '输入第一条消息。在{username}响应之前，这将是您唯一可以发送的消息。单击用户以选择其他收件人'
+      search_recipients: 输入用户名...
+      submit: 发送并开始聊天
+      copied: 消息已复制到剪贴板
+      more_users: 如果在此处没有搜索到用户，表示他们没有启用私信设置。
+      already: '你和 {username} 已经有一个私信会话了。'
+    chat:
+      messages_multiple: "共{count}条消息"
+      chat_with: '给 {username} 发私信'
+      start: 新私信
+      start_of_conversation: 您的传奇会话从此处开始
+      read: 已读
+      cant_start: 无法开始对话
+      text_placeholder: 在此输入消息
+      send: 发送
