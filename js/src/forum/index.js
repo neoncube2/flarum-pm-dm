@@ -1,5 +1,5 @@
 import app from 'flarum/forum/app';
-import { extend } from 'flarum/common/extend';
+import {extend} from 'flarum/common/extend';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Message from './models/Message';
 import Conversation from './models/Conversation';
@@ -12,7 +12,7 @@ import Stream from 'flarum/common/utils/Stream';
 
 import addConversationsDropdown from './addConversationsDropdown';
 
-app.initializers.add('kyrne-whisper', function (app) {
+app.initializers.add('littlecxm-whisper', function (app) {
   app.store.models.messages = Message;
   app.store.models.conversations = Conversation;
   app.store.models.conversation_users = ConversationUser;
@@ -20,8 +20,8 @@ app.initializers.add('kyrne-whisper', function (app) {
   User.prototype.conversations = Model.hasMany('conversations');
   User.prototype.unreadMessages = Model.attribute('unreadMessages');
 
-  app.routes.conversations = { path: '/whisper/conversations', component: ConversationsPage };
-  app.routes.messages = { path: '/whisper/messages/:id', component: ConversationViewPage };
+  app.routes.conversations = {path: '/whisper/conversations', component: ConversationsPage};
+  app.routes.messages = {path: '/whisper/messages/:id', component: ConversationViewPage};
 
   addConversationsDropdown();
 

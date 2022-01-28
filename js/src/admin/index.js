@@ -1,17 +1,17 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('kyrne-whisper', () => {
+app.initializers.add('littlecxm-whisper', () => {
   app.extensionData
-    .for('kyrne-whisper')
+    .for('littlecxm-whisper')
     .registerSetting({
-      setting: 'kyrne-whisper.return_key',
+      setting: 'littlecxm-whisper.return_key',
       type: 'bool',
-      label: app.translator.trans('kyrne-whisper.admin.settings.return_key'),
+      label: app.translator.trans('littlecxm-whisper.admin.settings.return_key'),
     })
     .registerPermission(
       {
         icon: 'fas fa-user-lock',
-        label: app.translator.trans('kyrne-whisper.admin.permissions.start_label'),
+        label: app.translator.trans('littlecxm-whisper.admin.permissions.start_label'),
         permission: 'startConversation',
       },
       'start'
