@@ -18,6 +18,7 @@ littlecxm-whisper:
       more_users: 如果在此处没有搜索到用户，表示他们没有启用私信设置。
       already: '你和 {username} 已经有一个私信会话了。'
     chat:
+      messages_single: 新私信
       messages_multiple: "共{count}条消息"
       chat_with: '给 {username} 发私信'
       start: 新私信
