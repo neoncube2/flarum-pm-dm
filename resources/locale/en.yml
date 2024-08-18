@@ -20,7 +20,7 @@ littlecxm-whisper:
       copied: Your message has been copied to the clipboard.
       more_users: >-
         If you don't see the user you are looking for, they don't have private
-        messaging setup.
+        messaging set up.
       already: 'You already have a conversation with {username}.'
     chat:
       messages_single: New conversation

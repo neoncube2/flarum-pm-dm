@@ -29,12 +29,4 @@ export default class ConversationsDropdown extends NotificationsDropdown {
   goToRoute() {
     m.route(app.route('conversations'));
   }
-
-  getUnreadCount() {
-    return app.session.user.unreadMessages();
-  }
-
-  getNewCount() {
-    return this.getUnreadCount();
-  }
 }

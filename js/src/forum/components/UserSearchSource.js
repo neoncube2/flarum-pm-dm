@@ -41,7 +41,7 @@ export default class UserSearchSource {
 
   pushResults(results) {
     results.payload.data.map((result) => {
-      let user = app.store.getById('users', result.id);
+      const user = app.store.getById('users', result.id);
       if (parseInt(user.id()) !== parseInt(app.session.user.id())) {
         app.cache.conversationResults[this.query].push(user);
       }

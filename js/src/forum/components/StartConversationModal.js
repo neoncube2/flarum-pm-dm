@@ -87,9 +87,9 @@ export default class StartConversationModal extends Modal {
       .then((conversation) => {
         if (!conversation.notNew()) {
           this.conversations.push(conversation);
-          const preconv = app.session.user.conversations();
-          preconv.push(conversation);
-          app.session.user.conversations = Stream(preconv);
+          // const preconv = app.session.user.conversations();
+          // preconv.push(conversation);
+          // app.session.user.conversations = Stream(preconv);
           m.redraw();
           app.modal.close();
         } else {
