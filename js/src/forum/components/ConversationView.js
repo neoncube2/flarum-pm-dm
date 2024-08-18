@@ -189,44 +189,44 @@ export default class ConversationView extends Component {
           </div>
         </div>
 
-        {messages?.length > 0 && !this.loading ?
+        {messages?.length > 0 && !this.loading ? (
           [
             <div className="chat-history">
               <ul>
                 {this.notNew ? <li className="startConvo">{app.translator.trans('littlecxm-whisper.forum.chat.start_of_conversation')}</li> : ''}
                 {messages
                   ? messages
-                    .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
-                    .sort((a, b) => {
-                      return a.createdAt() - b.createdAt();
-                    })
-                    .map((message, i) => {
-                      const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
-                      return (
-                        <li className="clearfix message-content">
-                          <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
-                            <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
-                              {avatar(myMessage ? app.session.user : message.user())}
+                      .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
+                      .sort((a, b) => {
+                        return a.createdAt() - b.createdAt();
+                      })
+                      .map((message, i) => {
+                        const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
+                        return (
+                          <li className="clearfix message-content">
+                            <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
+                              <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
+                                {avatar(myMessage ? app.session.user : message.user())}
+                              </div>
+                              <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
+                              <span className="message-data-time">{humanTime(message.createdAt())}</span>
                             </div>
-                            <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
-                            <span className="message-data-time">{humanTime(message.createdAt())}</span>
-                          </div>
-                          <MessageText
-                            content={message.message()}
-                            className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
-                          />
-                          {myMessage ? (
-                            parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
-                              <span className="message-read">{icon('fas fa-check')}</span>
+                            <MessageText
+                              content={message.message()}
+                              className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
+                            />
+                            {myMessage ? (
+                              parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
+                                <span className="message-read">{icon('fas fa-check')}</span>
+                              ) : (
+                                ''
+                              )
                             ) : (
                               ''
-                            )
-                          ) : (
-                            ''
-                          )}
-                        </li>
-                      );
-                    })
+                            )}
+                          </li>
+                        );
+                      })
                   : ''}
                 {this.messageContent() ? (
                   <li>
@@ -249,9 +249,9 @@ export default class ConversationView extends Component {
               </ul>
             </div>,
           ]
-          :
+        ) : (
           <LoadingIndicator display="block" size="medium" />
-        }
+        )}
 
         <form className="chat-message clearfix">
           <textarea
@@ -393,5 +393,4 @@ export default class ConversationView extends Component {
   isMobile() {
     return this.vnode.attrs.mobile;
   }
-
 }

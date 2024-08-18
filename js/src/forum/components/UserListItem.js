@@ -11,7 +11,10 @@ export default class UserListItem extends Component {
 
     const userId = parseInt(app.session.user.id());
 
-    this.user = this.conversation.recipients().find(recipient => parseInt(recipient.user().id()) !== userId)?.user();
+    this.user = this.conversation
+      .recipients()
+      .find((recipient) => parseInt(recipient.user().id()) !== userId)
+      ?.user();
     m.redraw();
 
     const typingInterval = () => {
@@ -67,11 +70,11 @@ export default class UserListItem extends Component {
             {username(this.user)}
             {userOnline(this.user)}
           </div>
-          {this.typing &&
+          {this.typing && (
             <div className="tiblock">
               <div className="tidot"></div>
             </div>
-          }
+          )}
         </div>
       </li>
     );

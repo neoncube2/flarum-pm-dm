@@ -12,7 +12,7 @@ export default class ConversationsList extends Component {
     this.loading = false;
   }
 
-  onupdate() { }
+  onupdate() {}
 
   onbeforeupdate() {
     const list = $('.ConversationsList-list');
@@ -55,31 +55,29 @@ export default class ConversationsList extends Component {
                 ? app.translator.trans('littlecxm-whisper.forum.chat.start')
                 : app.translator.trans('littlecxm-whisper.forum.chat.cant_start')
             )}
-            {
-              hasConversations && (
-                <ul className="ConversationsList-list">
-                  {Array.isArray(conversations) &&
-                    conversations.map((conversation, index) => {
-                      return (
-                        <UserListItem
-                          conversation={conversation}
-                          index={index}
-                          active={this.mobile ? false : this.currentConversation === conversation}
-                          onclick={(e) => {
-                            if (this.mobile) {
-                              m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
-                            } else {
-                              this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
+            {hasConversations && (
+              <ul className="ConversationsList-list">
+                {Array.isArray(conversations) &&
+                  conversations.map((conversation, index) => {
+                    return (
+                      <UserListItem
+                        conversation={conversation}
+                        index={index}
+                        active={this.mobile ? false : this.currentConversation === conversation}
+                        onclick={(e) => {
+                          if (this.mobile) {
+                            m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
+                          } else {
+                            this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
 
-                              redrawConversationsList();
-                            }
-                          }}
-                        />
-                      );
-                    })}
-                </ul>
-              )
-            }
+                            redrawConversationsList();
+                          }
+                        }}
+                      />
+                    );
+                  })}
+              </ul>
+            )}
           </div>
 
           {!this.mobile && this.conversationComponent}
@@ -107,7 +105,7 @@ export default class ConversationsList extends Component {
           app.cache.conversations.push(result);
         });
       })
-      .catch(() => { })
+      .catch(() => {})
       .then(() => {
         this.loading = false;
         m.redraw();
@@ -132,7 +130,7 @@ export default class ConversationsList extends Component {
         delete results.payload;
         app.cache.conversations = results;
       })
-      .catch(() => { })
+      .catch(() => {})
       .then(() => {
         this.loading = false;
         m.redraw();
