@@ -14,7 +14,6 @@ export default class ConversationView extends Component {
   oninit(vnode) {
     this.loading = true;
     this.vnode = vnode;
-    this.mobile = vnode.attrs.mobile;
     this.idParam = m.route.param('id');
     this.firstLoad = true;
 
@@ -22,24 +21,24 @@ export default class ConversationView extends Component {
 
     this.sendTimeout = true;
 
-    const interval1 = () => {
+    const typingTimeoutInterval = () => {
       this.typingTimeout = true;
       setTimeout(() => {
-        interval1();
+        typingTimeoutInterval();
       }, 5000);
     };
 
-    const interval2 = () => {
+    const typingInterval = () => {
       if (this.typingTime < new Date(Date.now() - 6000)) {
         this.typing = false;
         m.redraw();
       }
       setTimeout(() => {
-        interval2();
+        typingInterval();
       }, 6000);
     };
 
-    this.interval3 = () => {
+    this.sendTimeoutInterval = () => {
       if (this.timer === 0) {
         this.sendTimeout = true;
         m.redraw();
@@ -48,18 +47,17 @@ export default class ConversationView extends Component {
       this.timer--;
       if (this.timer >= 0) {
         setTimeout(() => {
-          this.interval3();
+          this.sendTimeoutInterval();
         }, 1000);
       }
     };
 
-    interval1();
-    interval2();
+    typingTimeoutInterval();
+    typingInterval();
 
     this.typing = false;
 
-    this.conversation = this.conversation ? this.conversation : vnode.attrs.conversation;
-
+    this.conversation ??= vnode.attrs.conversation;
     this.initPost();
   }
 
@@ -90,7 +88,7 @@ export default class ConversationView extends Component {
   onupdate() {
     $('.chat-history').scroll(() => {
       if (!this.notNew) {
-        let pos = $('.chat-history').scrollTop();
+        const pos = $('.chat-history').scrollTop();
         if (pos === 0) {
           const firstMsg = $('.message-content:first');
           this.getMessages(app.cache.messages[this.conversation.id()].length);
@@ -149,13 +147,9 @@ export default class ConversationView extends Component {
 
         channels.user.bind('typing', (data) => {
           if (parseInt(data.conversationId) === parseInt(this.conversation.id())) {
-            let list = $('.chat-history');
+            const list = $('.chat-history');
 
-            let scrollMore = false;
-
-            if (list.scrollTop() + list.innerHeight() >= list[0].scrollHeight - 50) {
-              scrollMore = true;
-            }
+            const scrollMore = list.scrollTop() + list.innerHeight() >= list[0].scrollHeight - 50;
 
             this.typing = true;
             this.typingTime = new Date();
@@ -178,9 +172,9 @@ export default class ConversationView extends Component {
   }
 
   view() {
-    this.messages = app.cache.messages ? app.cache.messages[this.conversation.id()] : [];
+    const messages = app.cache.messages ? app.cache.messages[this.conversation.id()] : [];
     return (
-      <div style={this.idParam && this.mobile ? 'width: 100%' : ''} className="chat">
+      <div style={this.idParam && this.isMobile() ? 'width: 100%' : ''} className="chat">
         <div className="chat-header clearfix">
           {avatar(this.user)}
 
@@ -195,44 +189,44 @@ export default class ConversationView extends Component {
           </div>
         </div>
 
-        {this.messages && this.messages.length > 0 && !this.loading ? (
+        {messages?.length > 0 && !this.loading ?
           [
             <div className="chat-history">
               <ul>
                 {this.notNew ? <li className="startConvo">{app.translator.trans('littlecxm-whisper.forum.chat.start_of_conversation')}</li> : ''}
-                {this.messages
-                  ? this.messages
-                      .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
-                      .sort((a, b) => {
-                        return a.createdAt() - b.createdAt();
-                      })
-                      .map((message, i) => {
-                        const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
-                        return (
-                          <li className="clearfix message-content">
-                            <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
-                              <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
-                                {avatar(myMessage ? app.session.user : message.user())}
-                              </div>
-                              <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
-                              <span className="message-data-time">{humanTime(message.createdAt())}</span>
+                {messages
+                  ? messages
+                    .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
+                    .sort((a, b) => {
+                      return a.createdAt() - b.createdAt();
+                    })
+                    .map((message, i) => {
+                      const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
+                      return (
+                        <li className="clearfix message-content">
+                          <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
+                            <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
+                              {avatar(myMessage ? app.session.user : message.user())}
                             </div>
-                            <MessageText
-                              content={message.message()}
-                              className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
-                            />
-                            {myMessage ? (
-                              parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
-                                <span className="message-read">{icon('fas fa-check')}</span>
-                              ) : (
-                                ''
-                              )
+                            <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
+                            <span className="message-data-time">{humanTime(message.createdAt())}</span>
+                          </div>
+                          <MessageText
+                            content={message.message()}
+                            className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
+                          />
+                          {myMessage ? (
+                            parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
+                              <span className="message-read">{icon('fas fa-check')}</span>
                             ) : (
                               ''
-                            )}
-                          </li>
-                        );
-                      })
+                            )
+                          ) : (
+                            ''
+                          )}
+                        </li>
+                      );
+                    })
                   : ''}
                 {this.messageContent() ? (
                   <li>
@@ -255,9 +249,9 @@ export default class ConversationView extends Component {
               </ul>
             </div>,
           ]
-        ) : (
+          :
           <LoadingIndicator display="block" size="medium" />
-        )}
+        }
 
         <form className="chat-message clearfix">
           <textarea
@@ -301,89 +295,86 @@ export default class ConversationView extends Component {
   }
 
   sendMessage() {
-    if (this.sendTimeout) {
-      if (this.messageContent() === '' || !this.messageContent().replace(/\s/g, '').length) return;
-      this.sendTimeout = false;
-      this.timer = 1;
-      this.interval3();
-      this.newMessageCount++;
-      app.store
-        .createRecord('messages')
-        .save({
-          messageContents: this.messageContent(),
-          conversationId: this.conversation.id(),
-        })
-        .then((message) => {
-          app.cache.messages[this.conversation.id()].push(message);
-          m.redraw();
-          this.messageContent('');
-          $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 500);
-          app.request({
-            method: 'POST',
-            url: app.forum.attribute('apiUrl') + '/whisper/messages/read',
-            body: {
-              conversationId: this.conversation.id(),
-              messageId: message.id(),
-            },
-          });
+    if (!this.sendTimeout || this.messageContent() === '' || !this.messageContent().replace(/\s/g, '').length) return;
+
+    this.sendTimeout = false;
+    this.timer = 1;
+    this.sendTimeoutInterval();
+    this.newMessageCount++;
+    app.store
+      .createRecord('messages')
+      .save({
+        messageContents: this.messageContent(),
+        conversationId: this.conversation.id(),
+      })
+      .then((message) => {
+        app.cache.messages[this.conversation.id()].push(message);
+        m.redraw();
+        this.messageContent('');
+        $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 500);
+        app.request({
+          method: 'POST',
+          url: app.forum.attribute('apiUrl') + '/whisper/messages/read',
+          body: {
+            conversationId: this.conversation.id(),
+            messageId: message.id(),
+          },
         });
-    }
+      });
   }
 
   getMessages(offset = 0) {
-    if (!this.notNew) {
-      app.store
-        .find('whisper/messages', this.conversation.id(), { offset })
-        .then((results) => {
-          delete results.payload;
-          if (this.firstLoad) {
-            const oldNumber = this.meRecipient.lastRead();
-            app
-              .request({
-                method: 'POST',
-                url: app.forum.attribute('apiUrl') + '/whisper/messages/read',
-                body: {
-                  conversationId: this.conversation.id(),
-                  messageId: results[0].id(),
-                },
-              })
-              .then((response) => {
-                const newNumber = response.data.attributes.lastRead;
-                let unreadMessages = 0;
-                const lastUnreadMessage = app.session.user.unreadMessages();
+    if (this.notNew) return;
 
-                if (lastUnreadMessage !== 0) unreadMessages = lastUnreadMessage - (newNumber - oldNumber);
+    app.store
+      .find('whisper/messages', this.conversation.id(), { offset })
+      .then((results) => {
+        delete results.payload;
+        if (this.firstLoad) {
+          const oldNumber = this.meRecipient.lastRead();
+          app
+            .request({
+              method: 'POST',
+              url: app.forum.attribute('apiUrl') + '/whisper/messages/read',
+              body: {
+                conversationId: this.conversation.id(),
+                messageId: results[0].id(),
+              },
+            })
+            .then((response) => {
+              const newNumber = response.data.attributes.lastRead;
+              let unreadMessages = 0;
+              const lastUnreadMessage = app.session.user.unreadMessages();
 
-                if (unreadMessages >= 0) {
-                  app.session.user.pushAttributes({
-                    unreadMessages,
-                  });
+              if (lastUnreadMessage !== 0) unreadMessages = lastUnreadMessage - (newNumber - oldNumber);
 
-                  m.redraw();
-                }
+              if (unreadMessages >= 0) {
+                app.session.user.pushAttributes({
+                  unreadMessages,
+                });
 
-                this.firstLoad = false;
-              });
-          }
-          app.cache.messages[this.conversation.id()].push(...results);
-          if (results.length < 20) {
-            this.notNew = true;
-          }
-        })
-        .then(() => {
-          this.loading = false;
-          m.redraw();
-        });
-    }
+                m.redraw();
+              }
+
+              this.firstLoad = false;
+            });
+        }
+        app.cache.messages[this.conversation.id()].push(...results);
+        if (results.length < 20) {
+          this.notNew = true;
+        }
+      })
+      .then(() => {
+        this.loading = false;
+        m.redraw();
+      });
   }
 
   load() {
     this.loading = true;
     m.redraw();
 
-    if (!app.cache.messages) {
-      app.cache.messages = [];
-    }
+    app.cache.messages ??= [];
 
     this.conversation.recipients().map((recipient) => {
       if (parseInt(recipient.user().id()) !== parseInt(app.session.user.id())) {
@@ -394,10 +385,13 @@ export default class ConversationView extends Component {
       }
     });
 
-    if (!app.cache.messages[this.conversation.id()]) {
-      app.cache.messages[this.conversation.id()] = [];
-    }
+    app.cache.messages[this.conversation.id()] ??= [];
 
     this.getMessages();
   }
+
+  isMobile() {
+    return this.vnode.attrs.mobile;
+  }
+
 }

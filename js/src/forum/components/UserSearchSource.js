@@ -6,9 +6,7 @@ export default class UserSearchSource {
   view(query) {
     if (query.length < 3 || this.loading) return;
 
-    if (!app.cache.conversationResults) {
-      app.cache.conversationResults = [];
-    }
+    app.cache.conversationResults ??= [];
 
     this.query = query;
 

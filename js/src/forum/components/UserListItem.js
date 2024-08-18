@@ -19,17 +19,17 @@ export default class UserListItem extends Component {
       }
     });
 
-    const interval2 = () => {
+    const typingInterval = () => {
       if (this.typingTime < new Date(Date.now() - 6000)) {
         this.typing = false;
         m.redraw();
       }
       setTimeout(() => {
-        interval2();
+        typingInterval();
       }, 6000);
     };
 
-    interval2();
+    typingInterval();
 
     super.oncreate(vnode);
   }
@@ -37,8 +37,7 @@ export default class UserListItem extends Component {
   onremove(vnode) {
     if (app.pusher) {
       app.pusher.then((object) => {
-        const channels = object.channels;
-        channels.user.unbind('typing');
+        object.channels.user.unbind('typing');
       });
     }
 

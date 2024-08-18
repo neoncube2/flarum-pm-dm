@@ -20,15 +20,13 @@ export default class RecipientSearch extends Search {
   }
 
   view() {
-    if (typeof this.value() === 'undefined') {
+    if (this.value == null) {
       this.value('');
     }
 
     const loading = this.value() && this.value().length >= 3;
 
-    if (!this.sources) {
-      this.sources = this.sourceItems().toArray();
-    }
+    this.sources ??= this.sourceItems().toArray();
 
     return (
       <div className="AddRecipientModal-body">

@@ -2,9 +2,9 @@ import Component from 'flarum/common/Component';
 
 export default class MessageText extends Component {
   static initAttrs(attrs) {
-    attrs.className = attrs.className || '';
-    attrs.content = attrs.content || '';
-    attrs.preview = attrs.preview || false;
+    attrs.className ??= '';
+    attrs.content ??= '';
+    attrs.preview ??= false;
   }
 
   view() {

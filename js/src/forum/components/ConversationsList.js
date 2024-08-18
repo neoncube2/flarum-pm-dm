@@ -10,10 +10,9 @@ export default class ConversationsList extends Component {
     this.mobile = vnode.attrs.mobile;
     this.load();
     this.loading = false;
-    this.currentConversation = null;
   }
 
-  onupdate() {}
+  onupdate() { }
 
   onbeforeupdate() {
     const list = $('.ConversationsList-list');
@@ -27,19 +26,22 @@ export default class ConversationsList extends Component {
 
   view() {
     if (this.loading) return;
+
     const conversations = app.cache.conversations;
 
-    if (this.currentConversation === null && app.cache.conversations && app.cache.conversations.length > 0) {
-      this.currentConversation = app.cache.conversations[0];
+    if (this.currentConversation === null && conversations?.length > 0) {
+      this.currentConversation = conversations[0];
     }
 
     if (this.currentConversation) {
       this.conversationComponent = ConversationView.component({ conversation: this.currentConversation, mobile: this.mobile });
     }
 
+    const hasConversations = conversations?.length > 0;
+
     return (
       <div className="ConversationsList">
-        <div style={app.session.user.conversations().length ? '' : 'width: unset; padding: 10px;'} className="container clearfix">
+        <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="container clearfix">
           <div style={this.mobile ? 'float: unset; margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
             {Button.component(
               {
@@ -51,7 +53,7 @@ export default class ConversationsList extends Component {
                 ? app.translator.trans('littlecxm-whisper.forum.chat.start')
                 : app.translator.trans('littlecxm-whisper.forum.chat.cant_start')
             )}
-            {!!app.session.user.conversations().length && (
+            {hasConversations && (
               <ul className="ConversationsList-list">
                 {Array.isArray(conversations) &&
                   conversations.map((conversation, i) => {
@@ -100,7 +102,7 @@ export default class ConversationsList extends Component {
           app.cache.conversations.push(result);
         });
       })
-      .catch(() => {})
+      .catch(() => { })
       .then(() => {
         this.loading = false;
         m.redraw();
@@ -125,7 +127,7 @@ export default class ConversationsList extends Component {
         delete results.payload;
         app.cache.conversations = results;
       })
-      .catch(() => {})
+      .catch(() => { })
       .then(() => {
         this.loading = false;
         m.redraw();
