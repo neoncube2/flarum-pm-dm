@@ -39,6 +39,8 @@ export default class ConversationsList extends Component {
 
     const hasConversations = conversations?.length > 0;
 
+    const redrawConversationsList = () => m.redraw();
+
     return (
       <div className="ConversationsList">
         <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="container clearfix">
@@ -53,28 +55,31 @@ export default class ConversationsList extends Component {
                 ? app.translator.trans('littlecxm-whisper.forum.chat.start')
                 : app.translator.trans('littlecxm-whisper.forum.chat.cant_start')
             )}
-            {hasConversations && (
-              <ul className="ConversationsList-list">
-                {Array.isArray(conversations) &&
-                  conversations.map((conversation, i) => {
-                    return (
-                      <UserListItem
-                        conversation={conversation}
-                        i={i}
-                        active={this.mobile ? false : this.currentConversation === conversation}
-                        onclick={(e) => {
-                          if (this.mobile) {
-                            m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
-                          } else {
-                            this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
-                            m.redraw();
-                          }
-                        }}
-                      />
-                    );
-                  })}
-              </ul>
-            )}
+            {
+              hasConversations && (
+                <ul className="ConversationsList-list">
+                  {Array.isArray(conversations) &&
+                    conversations.map((conversation, index) => {
+                      return (
+                        <UserListItem
+                          conversation={conversation}
+                          index={index}
+                          active={this.mobile ? false : this.currentConversation === conversation}
+                          onclick={(e) => {
+                            if (this.mobile) {
+                              m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
+                            } else {
+                              this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
+
+                              redrawConversationsList();
+                            }
+                          }}
+                        />
+                      );
+                    })}
+                </ul>
+              )
+            }
           </div>
 
           {!this.mobile && this.conversationComponent}

@@ -7,17 +7,12 @@ import app from 'flarum/forum/app';
 export default class UserListItem extends Component {
   oninit(vnode) {
     this.conversation = vnode.attrs.conversation;
-    this.index = vnode.attrs.i;
-    this.active = vnode.attrs.active;
-    this.loading = true;
+    this.user = null;
 
-    this.conversation.recipients().map((recipient) => {
-      if (parseInt(recipient.user().id()) !== parseInt(app.session.user.id())) {
-        this.user = recipient.user();
-        this.loading = false;
-        m.redraw();
-      }
-    });
+    const userId = parseInt(app.session.user.id());
+
+    this.user = this.conversation.recipients().find(recipient => parseInt(recipient.user().id()) !== userId)?.user();
+    m.redraw();
 
     const typingInterval = () => {
       if (this.typingTime < new Date(Date.now() - 6000)) {
@@ -62,26 +57,21 @@ export default class UserListItem extends Component {
   }
 
   view(vnode) {
-    if (this.loading || !this.user) return null;
-
-    const onclick = (e) => {
-      this.attrs.onclick(e);
-      this.active = this.conversation.id() === app.cache.conversations[$(e.currentTarget).attr('id')].id();
-    };
+    if (!this.user) return null;
 
     return (
-      <li id={this.index} className={this.active ? 'UserListItem active' : 'UserListItem'} onclick={onclick}>
+      <li id={vnode.attrs.index} className={vnode.attrs.active ? 'UserListItem active' : 'UserListItem'} onclick={vnode.attrs.onclick}>
         <div className="UserListItem-content">
           {avatar(this.user)}
           <div className="info">
             {username(this.user)}
             {userOnline(this.user)}
           </div>
-          {!!this.typing && (
+          {this.typing &&
             <div className="tiblock">
               <div className="tidot"></div>
             </div>
-          )}
+          }
         </div>
       </li>
     );
