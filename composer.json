@@ -1,13 +1,14 @@
 {
-    "name": "littlecxm/whisper",
-    "description": "Private Messaging for Flarum.",
+    "name": "neoncube/flarum-private-messages",
+    "description": "Private messaging (direct messaging) [PM/DM] for Flarum.",
     "keywords": [
         "flarum",
         "friendsofflarum",
-        "kyrne",
         "settings",
-        "points",
-        "private message"
+        "private message",
+        "direct messsage",
+        "PM",
+        "DM"
     ],
     "type": "flarum-extension",
     "license": "MIT",
@@ -25,15 +26,20 @@
         {
             "name": "CXM",
             "email": "littlecxm@gmail.com"
+        },
+        {
+            "name": "Eli Black",
+            "email": "eliblack@outlook.com",
+            "homepage": "https://mylittlewordland.com"
         }
     ],
     "support": {
-        "issues": "https://github.com/littlecxm/whisper/issues",
-        "source": "https://github.com/littlecxm/whisper",
-        "forum": "https://discuss.flarum.org/d/24073-whisper-private-messaging-for-flarum"
+        "issues": "https://github.com/neoncube/flarum-private-messaging/issues",
+        "source": "https://github.com/neoncube/flarum-private-messaging",
+        "forum": "https://discuss.flarum.org/d/..."
     },
     "require": {
-        "flarum/core": "^1.0.2"
+        "flarum/core": "^1.8.5"
     },
     "autoload": {
         "psr-4": {
@@ -42,10 +48,10 @@
     },
     "extra": {
         "flarum-extension": {
-            "title": "Whisper",
+            "title": "Private messages",
             "icon": {
-                "name": "fas fa-comments",
-                "background": "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(224,64,251,1) 0%, rgba(33,150,243,1) 100%)",
+                "name": "fas fa-message",
+                "background": "#FFF",
                 "color": "#000"
             },
             "category": "feature"
