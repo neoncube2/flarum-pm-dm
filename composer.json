@@ -44,6 +44,10 @@
     "require": {
         "flarum/core": "^1.8.5"
     },
+    "replace": {
+        "kyrne/whisper": "<=0.1.4",
+        "littlecxm/whisper": "<0.1.5"
+    },
     "autoload": {
         "psr-4": {
             "Neoncube\\FlarumPrivateMessages\\": "src/"
