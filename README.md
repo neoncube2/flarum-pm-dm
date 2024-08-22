@@ -20,15 +20,15 @@ This package internally uses the names "Whisper" and "littlecxm-whisper" in some
 
 # Links
 
-- [Source code on GitHub](https://github.com/neoncube/flarum-private-messages)
-- [Report an issue](https://github.com/neoncube/flarum-private-messages/issues)
+- [Source code on GitHub](https://github.com/neoncube2/flarum-private-messages)
+- [Report an issue](https://github.com/neoncube2/flarum-private-messages/issues)
 - [Download via Packagist](https://packagist.org/packages/neoncube/flarum-private-messages)
 
 # Credits
 
-Thank you to Kyrne, who made the original [Whisper] () extension that this extension is largely based off of!
+Thank you to [Kyrne](https://redevs.org), who made the original [Whisper](https://flarum.org/index.php/extension/kyrne/whisper) extension, which this extension is mostly based off of!
 
-Thakn you to David Wheatleu and CSM for their many bugfixes and contributions via the fork [littlecxm/whisper](https://github.com/littlecxm/whisper)!
+Thank you to [David Wheatleu](https://davwheat.dev) and [CXM](https://github.com/littlecxm) for their many bug fixes and contributions!
 
 # License
 
