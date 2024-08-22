@@ -115,7 +115,9 @@ export default class ConversationView extends Component {
     $('#MessageTextArea')
       .off()
       .on('keydown', (e) => {
-        if (e.keyCode === 13 && app.forum.attribute('whisperReturnKey')) {
+        console.log(app.forum);
+
+        if (e.keyCode === 13 && app.forum.attribute('privateMessagesReturnKey')) {
           $('#MessageTextArea').prop('disabled', true);
           this.sendMessage();
         }
@@ -282,7 +284,7 @@ export default class ConversationView extends Component {
       app
         .request({
           method: 'POST',
-          url: app.forum.attribute('apiUrl') + '/whisper/messages/typing',
+          url: app.forum.attribute('apiUrl') + '/private-messages/messages/typing',
           body: {
             conversationId: this.conversation.id(),
             userId: this.user.id(),
@@ -314,7 +316,7 @@ export default class ConversationView extends Component {
         $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 500);
         app.request({
           method: 'POST',
-          url: app.forum.attribute('apiUrl') + '/whisper/messages/read',
+          url: app.forum.attribute('apiUrl') + '/private-messages/messages/read',
           body: {
             conversationId: this.conversation.id(),
             messageId: message.id(),
@@ -327,7 +329,7 @@ export default class ConversationView extends Component {
     if (this.notNew) return;
 
     app.store
-      .find('whisper/messages', this.conversation.id(), { offset })
+      .find('private-messages/messages', this.conversation.id(), { offset })
       .then((results) => {
         delete results.payload;
         if (this.firstLoad) {
@@ -335,7 +337,7 @@ export default class ConversationView extends Component {
           app
             .request({
               method: 'POST',
-              url: app.forum.attribute('apiUrl') + '/whisper/messages/read',
+              url: app.forum.attribute('apiUrl') + '/private-messages/messages/read',
               body: {
                 conversationId: this.conversation.id(),
                 messageId: results[0].id(),

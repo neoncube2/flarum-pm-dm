@@ -1,6 +1,6 @@
 {
     "name": "neoncube/flarum-private-messages",
-    "description": "Private messages (direct messages) [PM's/DM's] for Flarum.",
+    "description": "Private messages (PMs) for Flarum!\n\n(PMs are sometimes knows as DM's: \"Direct messages\")",
     "keywords": [
         "flarum",
         "friendsofflarum",
@@ -27,7 +27,8 @@
         },
         {
             "name": "CXM",
-            "email": "littlecxm@gmail.com"
+            "email": "littlecxm@gmail.com",
+            "homepage": "https://littlecxm.me"
         },
         {
             "name": "Eli Black",
@@ -52,7 +53,7 @@
         "flarum-extension": {
             "title": "Private messages",
             "icon": {
-                "name": "fas fa-message",
+                "name": "fas fa-comment-alt",
                 "background": "#FFF",
                 "color": "#000"
             },

@@ -61,5 +61,5 @@ return [
     (new Extend\ApiController(Controller\UpdateUserController::class))
         ->addInclude('conversations'),
     (new Extend\Notification())
-        ->type(PrivateMessageReceivedBlueprint::class, MessageSerializer::class, ['alert', /*'email'*/]),
+        ->type(PrivateMessageReceivedBlueprint::class, MessageSerializer::class, ['alert', 'email']),
 ];

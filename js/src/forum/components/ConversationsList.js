@@ -98,7 +98,7 @@ export default class ConversationsList extends Component {
     m.redraw();
 
     app.store
-      .find('whisper/conversations', { offset: app.cache.conversations.length })
+      .find('private-messages/conversations', { offset: app.cache.conversations.length })
       .then((results) => {
         delete results.payload;
         results.map((result) => {
@@ -125,7 +125,7 @@ export default class ConversationsList extends Component {
     m.redraw();
 
     app.store
-      .find('whisper/conversations')
+      .find('private-messages/conversations')
       .then((results) => {
         delete results.payload;
         app.cache.conversations = results;
