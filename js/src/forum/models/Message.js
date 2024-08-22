@@ -10,6 +10,6 @@ export default class Message extends mixin(Model, {
   number: Model.hasOne('number'),
 }) {
   apiEndpoint() {
-    return `/private-messages/messages${this.exists ? `/${this.data.id}` : ''}`;
+    return `/neoncube-private-messages/messages${this.exists ? `/${this.data.id}` : ''}`;
   }
 }

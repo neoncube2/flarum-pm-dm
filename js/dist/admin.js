@@ -13,14 +13,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_admin_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/admin/app */ "flarum/admin/app");
 /* harmony import */ var flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_admin_app__WEBPACK_IMPORTED_MODULE_0__);
 
-flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('private-messages', function () {
-  flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().extensionData["for"]('private-messages').registerSetting({
-    setting: 'private-messages.return_key',
+flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('neoncube-private-messages', function () {
+  flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().extensionData["for"]('neoncube-private-messages').registerSetting({
+    setting: 'neoncube-private-messages.return_key',
     type: 'bool',
-    label: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('private-messages.admin.settings.return_key')
+    label: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('neoncube-private-messages.admin.settings.return_key')
   }).registerPermission({
     icon: 'fas fa-user-lock',
-    label: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('private-messages.admin.permissions.start_label'),
+    label: flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().translator.trans('neoncube-private-messages.admin.permissions.start_label'),
     permission: 'startConversation'
   }, 'start');
 });

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Neoncube\FlarumPrivateMessages;
 
 use Flarum\Api\Controller;
@@ -18,22 +17,22 @@ return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
         ->css(__DIR__ . '/resources/less/extension.less')
-        ->route('/private-messages/messages/{id}', 'private-messages.messages')
-        ->route('/private-messages/conversations', 'private-messages.conversation'),
+        ->route('/neoncube-private-messages/messages/{id}', 'neoncube-private-messages.messages')
+        ->route('/neoncube-private-messages/conversations', 'neoncube-private-messages.conversation'),
     new Extend\Locales(__DIR__ . '/resources/locale'),
     (new Extend\Model(User::class))
         ->hasMany('conversations', ConversationUser::class, 'user_id'),
     (new Extend\Routes('api'))
-        ->get('/private-messages/conversations', 'private-messages.conversations.index', Controllers\ListConversationsController::class)
-        ->get('/private-messages/messages/{id}', 'private-messages.messages.list', Controllers\ListMessagesController::class)
-        ->post('/private-messages/conversations', 'private-messages.conversations.create', Controllers\CreateConversationController::class)
-        ->post('/private-messages/messages', 'private-messages.messages.create', Controllers\CreateMessageController::class)
-        ->post('/private-messages/messages/typing', 'private-messages.message.typing', Controllers\TypingPusherController::class)
-        ->post('/private-messages/messages/read', 'private-messages.message.read', Controllers\ReadMessageController::class)
-        ->delete('/private-messages/messages{id}', 'private-messages.messages.delete', Controllers\DeleteMessageController::class)
+        ->get('/neoncube-private-messages/conversations', 'neoncube-private-messages.conversations.index', Controllers\ListConversationsController::class)
+        ->get('/neoncube-private-messages/messages/{id}', 'neoncube-private-messages.messages.list', Controllers\ListMessagesController::class)
+        ->post('/neoncube-private-messages/conversations', 'neoncube-private-messages.conversations.create', Controllers\CreateConversationController::class)
+        ->post('/neoncube-private-messages/messages', 'neoncube-private-messages.messages.create', Controllers\CreateMessageController::class)
+        ->post('/neoncube-private-messages/messages/typing', 'neoncube-private-messages.message.typing', Controllers\TypingPusherController::class)
+        ->post('/neoncube-private-messages/messages/read', 'neoncube-private-messages.message.read', Controllers\ReadMessageController::class)
+        ->delete('/neoncube-private-messages/messages{id}', 'neoncube-private-messages.messages.delete', Controllers\DeleteMessageController::class)
         //->patch('/messages/{id}', 'messages.update', Controllers\UpdateMessageController::class)
         //->delete('/messages/{id}', 'messages.delete', Controllers\DeleteMessageController::class)
-        ->get('/private-messages/conversations/{id}', 'private-messages.conversations.show', Controllers\ShowConversationController::class),
+        ->get('/neoncube-private-messages/conversations/{id}', 'neoncube-private-messages.conversations.show', Controllers\ShowConversationController::class),
 
     (new Extend\ApiSerializer(ForumSerializer::class))
         ->attribute('canMessage', function (ForumSerializer $serializer) {
@@ -46,7 +45,7 @@ return [
         }),
 
     (new Extend\Settings())
-        ->serializeToForum('privateMessagesReturnKey', 'private-messages.return_key', function ($value) {
+        ->serializeToForum('neoncubePrivateMessagesReturnKey', 'neoncube-neoncube-private-messages.return_key', function ($value) {
             return (bool)$value;
         }),
     (new Extend\ApiSerializer(CurrentUserSerializer::class))

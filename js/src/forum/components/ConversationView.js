@@ -117,7 +117,7 @@ export default class ConversationView extends Component {
       .on('keydown', (e) => {
         console.log(app.forum);
 
-        if (e.keyCode === 13 && app.forum.attribute('privateMessagesReturnKey')) {
+        if (e.keyCode === 13 && app.forum.attribute('neoncubePrivateMessagesReturnKey')) {
           $('#MessageTextArea').prop('disabled', true);
           this.sendMessage();
         }
@@ -181,10 +181,10 @@ export default class ConversationView extends Component {
           {avatar(this.user)}
 
           <div className="chat-about">
-            <div className="chat-with">{app.translator.trans('private-messages.forum.chat.chat_with', { username: username(this.user) })}</div>
+            <div className="chat-with">{app.translator.trans('neoncube-private-messages.forum.chat.chat_with', { username: username(this.user) })}</div>
             <div className="chat-num-messages">
               {app.translator.trans(
-                'private-messages.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'),
+                'neoncube-private-messages.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'),
                 { count: this.conversation.totalMessages() + this.newMessageCount }
               )}
             </div>
@@ -195,40 +195,40 @@ export default class ConversationView extends Component {
           [
             <div className="chat-history">
               <ul>
-                {this.notNew ? <li className="startConvo">{app.translator.trans('private-messages.forum.chat.start_of_conversation')}</li> : ''}
+                {this.notNew ? <li className="startConvo">{app.translator.trans('neoncube-private-messages.forum.chat.start_of_conversation')}</li> : ''}
                 {messages
                   ? messages
-                      .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
-                      .sort((a, b) => {
-                        return a.createdAt() - b.createdAt();
-                      })
-                      .map((message, i) => {
-                        const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
-                        return (
-                          <li className="clearfix message-content">
-                            <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
-                              <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
-                                {avatar(myMessage ? app.session.user : message.user())}
-                              </div>
-                              <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
-                              <span className="message-data-time">{humanTime(message.createdAt())}</span>
+                    .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
+                    .sort((a, b) => {
+                      return a.createdAt() - b.createdAt();
+                    })
+                    .map((message, i) => {
+                      const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
+                      return (
+                        <li className="clearfix message-content">
+                          <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
+                            <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
+                              {avatar(myMessage ? app.session.user : message.user())}
                             </div>
-                            <MessageText
-                              content={message.message()}
-                              className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
-                            />
-                            {myMessage ? (
-                              parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
-                                <span className="message-read">{icon('fas fa-check')}</span>
-                              ) : (
-                                ''
-                              )
+                            <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
+                            <span className="message-data-time">{humanTime(message.createdAt())}</span>
+                          </div>
+                          <MessageText
+                            content={message.message()}
+                            className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
+                          />
+                          {myMessage ? (
+                            parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
+                              <span className="message-read">{icon('fas fa-check')}</span>
                             ) : (
                               ''
-                            )}
-                          </li>
-                        );
-                      })
+                            )
+                          ) : (
+                            ''
+                          )}
+                        </li>
+                      );
+                    })
                   : ''}
                 {this.messageContent() ? (
                   <li>
@@ -260,7 +260,7 @@ export default class ConversationView extends Component {
             id="MessageTextArea"
             value={this.messageContent()}
             oninput={withAttr('value', this.typingPush.bind(this))}
-            placeholder={app.translator.trans('private-messages.forum.chat.text_placeholder')}
+            placeholder={app.translator.trans('neoncube-private-messages.forum.chat.text_placeholder')}
             rows="3"
           ></textarea>
 
@@ -270,7 +270,7 @@ export default class ConversationView extends Component {
               className: 'Button Button--primary',
               disabled: !this.messageContent() || !this.sendTimeout,
             },
-            app.translator.trans('private-messages.forum.chat.send')
+            app.translator.trans('neoncube-private-messages.forum.chat.send')
           )}
         </form>
       </div>
@@ -284,7 +284,7 @@ export default class ConversationView extends Component {
       app
         .request({
           method: 'POST',
-          url: app.forum.attribute('apiUrl') + '/private-messages/messages/typing',
+          url: app.forum.attribute('apiUrl') + '/neoncube-private-messages/messages/typing',
           body: {
             conversationId: this.conversation.id(),
             userId: this.user.id(),
@@ -316,7 +316,7 @@ export default class ConversationView extends Component {
         $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 500);
         app.request({
           method: 'POST',
-          url: app.forum.attribute('apiUrl') + '/private-messages/messages/read',
+          url: app.forum.attribute('apiUrl') + '/neoncube-private-messages/messages/read',
           body: {
             conversationId: this.conversation.id(),
             messageId: message.id(),
@@ -329,7 +329,7 @@ export default class ConversationView extends Component {
     if (this.notNew) return;
 
     app.store
-      .find('private-messages/messages', this.conversation.id(), { offset })
+      .find('neoncube-private-messages/messages', this.conversation.id(), { offset })
       .then((results) => {
         delete results.payload;
         if (this.firstLoad) {
@@ -337,7 +337,7 @@ export default class ConversationView extends Component {
           app
             .request({
               method: 'POST',
-              url: app.forum.attribute('apiUrl') + '/private-messages/messages/read',
+              url: app.forum.attribute('apiUrl') + '/neoncube-private-messages/messages/read',
               body: {
                 conversationId: this.conversation.id(),
                 messageId: results[0].id(),

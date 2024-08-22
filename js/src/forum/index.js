@@ -13,7 +13,7 @@ import PrivateMessageReceivedNotification from './components/PrivateMessageRecei
 import Stream from 'flarum/common/utils/Stream';
 import addConversationsDropdown from './addConversationsDropdown';
 
-app.initializers.add('private-messages', function (app) {
+app.initializers.add('neoncube-private-messages', function (app) {
   app.store.models.messages = Message;
   app.store.models.conversations = Conversation;
   app.store.models.conversation_users = ConversationUser;
@@ -23,8 +23,8 @@ app.initializers.add('private-messages', function (app) {
 
   app.notificationComponents.privateMessageReceived = PrivateMessageReceivedNotification;
 
-  app.routes.conversations = { path: '/private-messages/conversations', component: ConversationsPage };
-  app.routes.messages = { path: '/private-messages/messages/:id', component: ConversationViewPage };
+  app.routes.conversations = { path: '/neoncube-private-messages/conversations', component: ConversationsPage };
+  app.routes.messages = { path: '/neoncube-private-messages/messages/:id', component: ConversationViewPage };
 
   addConversationsDropdown();
 
@@ -57,7 +57,7 @@ app.initializers.add('private-messages', function (app) {
     items.add('privateMessgeReceived', {
       name: 'privateMessgeReceived',
       icon: 'fas fa-comment-alt',
-      label: app.translator.trans('private-messages.forum.notifications.notify_message_received'),
+      label: app.translator.trans('neoncube-private-messages.forum.notifications.notify_message_received'),
     });
   });
 });

@@ -43,7 +43,7 @@ export default class RecipientSearch extends Search {
                 element.focus();
               }}
               type="search"
-              placeholder={extractText(app.translator.trans('private-messages.forum.modal.search_recipients'))}
+              placeholder={extractText(app.translator.trans('neoncube-private-messages.forum.modal.search_recipients'))}
               value={this.value()}
               oninput={withAttr('value', this.value)}
               onfocus={() => (this.hasFocus = true)}
@@ -75,7 +75,7 @@ export default class RecipientSearch extends Search {
                 ? LoadingIndicator.component({ size: 'tiny', className: 'Button Button--icon Button--link' })
                 : this.sources.map((source) => source.view(this.value()))}
               <li>
-                <span>{app.translator.trans('private-messages.forum.modal.more_users')}</span>
+                <span>{app.translator.trans('neoncube-private-messages.forum.modal.more_users')}</span>
               </li>
             </ul>
           </div>

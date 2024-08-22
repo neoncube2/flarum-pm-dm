@@ -15,6 +15,6 @@ export default class PrivateMessageReceivedNotification extends Notification {
   }
 
   content() {
-    return app.translator.trans('private-messages.forum.notifications.message_received', { user: this.attrs.notification.fromUser() });
+    return app.translator.trans('neoncube-private-messages.forum.notifications.message_received', { user: this.attrs.notification.fromUser() });
   }
 }

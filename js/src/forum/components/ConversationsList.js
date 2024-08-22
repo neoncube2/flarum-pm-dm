@@ -12,7 +12,7 @@ export default class ConversationsList extends Component {
     this.loading = false;
   }
 
-  onupdate() {}
+  onupdate() { }
 
   onbeforeupdate() {
     const list = $('.ConversationsList-list');
@@ -52,8 +52,8 @@ export default class ConversationsList extends Component {
                 disabled: !app.forum.attribute('canMessage'),
               },
               app.forum.attribute('canMessage')
-                ? app.translator.trans('private-messages.forum.chat.start')
-                : app.translator.trans('private-messages.forum.chat.cant_start')
+                ? app.translator.trans('neoncube-private-messages.forum.chat.start')
+                : app.translator.trans('neoncube-private-messages.forum.chat.cant_start')
             )}
             {hasConversations && (
               <ul className="ConversationsList-list">
@@ -98,14 +98,14 @@ export default class ConversationsList extends Component {
     m.redraw();
 
     app.store
-      .find('private-messages/conversations', { offset: app.cache.conversations.length })
+      .find('neoncube-private-messages/conversations', { offset: app.cache.conversations.length })
       .then((results) => {
         delete results.payload;
         results.map((result) => {
           app.cache.conversations.push(result);
         });
       })
-      .catch(() => {})
+      .catch(() => { })
       .then(() => {
         this.loading = false;
         m.redraw();
@@ -125,12 +125,12 @@ export default class ConversationsList extends Component {
     m.redraw();
 
     app.store
-      .find('private-messages/conversations')
+      .find('neoncube-private-messages/conversations')
       .then((results) => {
         delete results.payload;
         app.cache.conversations = results;
       })
-      .catch(() => {})
+      .catch(() => { })
       .then(() => {
         this.loading = false;
         m.redraw();

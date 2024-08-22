@@ -176,7 +176,7 @@ var ConversationView = /*#__PURE__*/function (_Component) {
     });
     $('#MessageTextArea').off().on('keydown', function (e) {
       console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum));
-      if (e.keyCode === 13 && flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('privateMessagesReturnKey')) {
+      if (e.keyCode === 13 && flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('neoncubePrivateMessagesReturnKey')) {
         $('#MessageTextArea').prop('disabled', true);
         _this3.sendMessage();
       }
@@ -239,17 +239,17 @@ var ConversationView = /*#__PURE__*/function (_Component) {
       className: "chat-about"
     }, m("div", {
       className: "chat-with"
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('private-messages.forum.chat.chat_with', {
+    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('neoncube-private-messages.forum.chat.chat_with', {
       username: flarum_common_helpers_username__WEBPACK_IMPORTED_MODULE_4___default()(this.user)
     })), m("div", {
       className: "chat-num-messages"
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('private-messages.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'), {
+    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('neoncube-private-messages.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'), {
       count: this.conversation.totalMessages() + this.newMessageCount
     })))), (messages == null ? void 0 : messages.length) > 0 && !this.loading ? [m("div", {
       className: "chat-history"
     }, m("ul", null, this.notNew ? m("li", {
       className: "startConvo"
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('private-messages.forum.chat.start_of_conversation')) : '', messages ? messages.filter(function (message, index, self) {
+    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('neoncube-private-messages.forum.chat.start_of_conversation')) : '', messages ? messages.filter(function (message, index, self) {
       return index === self.findIndex(function (t) {
         return t.message() === message.message();
       });
@@ -294,13 +294,13 @@ var ConversationView = /*#__PURE__*/function (_Component) {
       id: "MessageTextArea",
       value: this.messageContent(),
       oninput: flarum_common_utils_withAttr__WEBPACK_IMPORTED_MODULE_9___default()('value', this.typingPush.bind(this)),
-      placeholder: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('private-messages.forum.chat.text_placeholder'),
+      placeholder: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('neoncube-private-messages.forum.chat.text_placeholder'),
       rows: "3"
     }), flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_2___default().component({
       onclick: this.sendMessage.bind(this),
       className: 'Button Button--primary',
       disabled: !this.messageContent() || !this.sendTimeout
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('private-messages.forum.chat.send'))));
+    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().translator.trans('neoncube-private-messages.forum.chat.send'))));
   };
   _proto.typingPush = function typingPush(value) {
     var _this6 = this;
@@ -309,7 +309,7 @@ var ConversationView = /*#__PURE__*/function (_Component) {
     if (this.typingTimeout) {
       flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().request({
         method: 'POST',
-        url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('apiUrl') + '/private-messages/messages/typing',
+        url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('apiUrl') + '/neoncube-private-messages/messages/typing',
         body: {
           conversationId: this.conversation.id(),
           userId: this.user.id()
@@ -338,7 +338,7 @@ var ConversationView = /*#__PURE__*/function (_Component) {
       }, 500);
       flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().request({
         method: 'POST',
-        url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('apiUrl') + '/private-messages/messages/read',
+        url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('apiUrl') + '/neoncube-private-messages/messages/read',
         body: {
           conversationId: _this7.conversation.id(),
           messageId: message.id()
@@ -352,7 +352,7 @@ var ConversationView = /*#__PURE__*/function (_Component) {
       offset = 0;
     }
     if (this.notNew) return;
-    flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().store.find('private-messages/messages', this.conversation.id(), {
+    flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().store.find('neoncube-private-messages/messages', this.conversation.id(), {
       offset: offset
     }).then(function (results) {
       var _app$cache$messages$_;
@@ -361,7 +361,7 @@ var ConversationView = /*#__PURE__*/function (_Component) {
         var oldNumber = _this8.meRecipient.lastRead();
         flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().request({
           method: 'POST',
-          url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('apiUrl') + '/private-messages/messages/read',
+          url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().forum.attribute('apiUrl') + '/neoncube-private-messages/messages/read',
           body: {
             conversationId: _this8.conversation.id(),
             messageId: results[0].id()
@@ -448,7 +448,7 @@ var ConversationViewPage = /*#__PURE__*/function (_Page) {
     _Page.prototype.init.call(this);
     app.history.push('conversations');
     var idParam = m.route.param('id');
-    app.store.find('private-messages/conversations', idParam).then(function (conversation) {
+    app.store.find('neoncube-private-messages/conversations', idParam).then(function (conversation) {
       app.cache.conversations = [conversation];
       _this.list = _ConversationView__WEBPACK_IMPORTED_MODULE_2__["default"].component({
         conversation: conversation,
@@ -500,7 +500,7 @@ var ConversationsDropdown = /*#__PURE__*/function (_NotificationsDropdow) {
   }
   (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(ConversationsDropdown, _NotificationsDropdow);
   ConversationsDropdown.initAttrs = function initAttrs(attrs) {
-    attrs.label || (attrs.label = flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('private-messages.forum.dropdown.tooltip'));
+    attrs.label || (attrs.label = flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans('neoncube-private-messages.forum.dropdown.tooltip'));
     attrs.icon || (attrs.icon = 'fas fa-comment-alt');
     attrs.className = 'MessagesDropdown NotificationsDropdown';
     _NotificationsDropdow.initAttrs.call(this, attrs);
@@ -606,7 +606,7 @@ var ConversationsList = /*#__PURE__*/function (_Component) {
       onclick: this.showModal.bind(this),
       className: 'Button Button--primary',
       disabled: !flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().forum.attribute('canMessage')
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().forum.attribute('canMessage') ? flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().translator.trans('private-messages.forum.chat.start') : flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().translator.trans('private-messages.forum.chat.cant_start')), hasConversations && m("ul", {
+    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().forum.attribute('canMessage') ? flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().translator.trans('neoncube-private-messages.forum.chat.start') : flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().translator.trans('neoncube-private-messages.forum.chat.cant_start')), hasConversations && m("ul", {
       className: "ConversationsList-list"
     }, Array.isArray(conversations) && conversations.map(function (conversation, index) {
       return m(_UserListItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -636,7 +636,7 @@ var ConversationsList = /*#__PURE__*/function (_Component) {
     var _this3 = this;
     this.loading = true;
     m.redraw();
-    flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().store.find('private-messages/conversations', {
+    flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().store.find('neoncube-private-messages/conversations', {
       offset: (flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().cache).conversations.length
     }).then(function (results) {
       delete results.payload;
@@ -658,7 +658,7 @@ var ConversationsList = /*#__PURE__*/function (_Component) {
     }
     this.loading = true;
     m.redraw();
-    flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().store.find('private-messages/conversations').then(function (results) {
+    flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().store.find('neoncube-private-messages/conversations').then(function (results) {
       delete results.payload;
       (flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().cache).conversations = results;
     })["catch"](function () {}).then(function () {
@@ -806,7 +806,7 @@ var PrivateMessageReceivedNotification = /*#__PURE__*/function (_Notification) {
     return app.route.discussion(discussion, content.postNumber);
   };
   _proto.content = function content() {
-    return app.translator.trans('private-messages.forum.notifications.message_received', {
+    return app.translator.trans('neoncube-private-messages.forum.notifications.message_received', {
       user: this.attrs.notification.fromUser()
     });
   };
@@ -893,7 +893,7 @@ var RecipientSearch = /*#__PURE__*/function (_Search) {
         element.focus();
       },
       type: "search",
-      placeholder: flarum_common_utils_extractText__WEBPACK_IMPORTED_MODULE_5___default()(flarum_forum_app__WEBPACK_IMPORTED_MODULE_10___default().translator.trans('private-messages.forum.modal.search_recipients')),
+      placeholder: flarum_common_utils_extractText__WEBPACK_IMPORTED_MODULE_5___default()(flarum_forum_app__WEBPACK_IMPORTED_MODULE_10___default().translator.trans('neoncube-private-messages.forum.modal.search_recipients')),
       value: this.value(),
       oninput: flarum_common_utils_withAttr__WEBPACK_IMPORTED_MODULE_9___default()('value', this.value),
       onfocus: function onfocus() {
@@ -927,7 +927,7 @@ var RecipientSearch = /*#__PURE__*/function (_Search) {
       className: 'Button Button--icon Button--link'
     }) : this.sources.map(function (source) {
       return source.view(_this.value());
-    }), m("li", null, m("span", null, flarum_forum_app__WEBPACK_IMPORTED_MODULE_10___default().translator.trans('private-messages.forum.modal.more_users'))))) : m("div", {
+    }), m("li", null, m("span", null, flarum_forum_app__WEBPACK_IMPORTED_MODULE_10___default().translator.trans('neoncube-private-messages.forum.modal.more_users'))))) : m("div", {
       className: "RecipientsInput-selected RecipientsLabel"
     }, (0,_recipientLabel__WEBPACK_IMPORTED_MODULE_7__["default"])((flarum_forum_app__WEBPACK_IMPORTED_MODULE_10___default().cache).conversationsRecipient, {
       onclick: function onclick() {
@@ -1038,7 +1038,7 @@ var StartConversationModal = /*#__PURE__*/function (_Modal) {
     this.messageContent = flarum_common_utils_Stream__WEBPACK_IMPORTED_MODULE_5___default()('');
   };
   _proto.title = function title() {
-    return flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.modal.title');
+    return flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.modal.title');
   };
   _proto.className = function className() {
     return 'StartConversationModal Modal--medium';
@@ -1049,15 +1049,15 @@ var StartConversationModal = /*#__PURE__*/function (_Modal) {
       onclick: function onclick(e) {
         return e.stopImmediatePropagation();
       }
-    }, this.already ? [m("h2", null, flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.modal.already', {
+    }, this.already ? [m("h2", null, flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.modal.already', {
       username: flarum_common_helpers_username__WEBPACK_IMPORTED_MODULE_4___default()(this.recpient)
-    })), m("h2", null, flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.modal.copied', {
+    })), m("h2", null, flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.modal.copied', {
       username: flarum_common_helpers_username__WEBPACK_IMPORTED_MODULE_4___default()(this.recpient)
     }))] : m("div", null, m("div", {
       "class": "helpText"
-    }, (flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().cache).conversationsRecipient !== null ? flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.modal.help_start', {
+    }, (flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().cache).conversationsRecipient !== null ? flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.modal.help_start', {
       username: flarum_common_helpers_username__WEBPACK_IMPORTED_MODULE_4___default()((flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().cache).conversationsRecipient)
-    }) : flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.modal.help')), m("div", {
+    }) : flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.modal.help')), m("div", {
       className: "AddRecipientModal-form"
     }, m(_RecipientSearch__WEBPACK_IMPORTED_MODULE_3__["default"], {
       state: (flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().search)
@@ -1066,13 +1066,13 @@ var StartConversationModal = /*#__PURE__*/function (_Modal) {
     }, m("textarea", {
       value: this.messageContent(),
       oninput: flarum_common_utils_withAttr__WEBPACK_IMPORTED_MODULE_6___default()('value', this.messageContent),
-      placeholder: flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.chat.text_placeholder'),
+      placeholder: flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.chat.text_placeholder'),
       rows: "3"
     }), flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_2___default().component({
       type: 'submit',
       className: 'Button Button--primary',
       disabled: !this.messageContent()
-    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('private-messages.forum.modal.submit'))) : '')))];
+    }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().translator.trans('neoncube-private-messages.forum.modal.submit'))) : '')))];
   };
   _proto.onsubmit = function onsubmit(e) {
     var _this = this;
@@ -1361,7 +1361,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('private-messages', function (app) {
+flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('neoncube-private-messages', function (app) {
   app.store.models.messages = _models_Message__WEBPACK_IMPORTED_MODULE_4__["default"];
   app.store.models.conversations = _models_Conversation__WEBPACK_IMPORTED_MODULE_5__["default"];
   app.store.models.conversation_users = _models_ConversationUser__WEBPACK_IMPORTED_MODULE_6__["default"];
@@ -1369,11 +1369,11 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('privat
   (flarum_common_models_User__WEBPACK_IMPORTED_MODULE_7___default().prototype).unreadMessages = flarum_common_Model__WEBPACK_IMPORTED_MODULE_8___default().attribute('unreadMessages');
   app.notificationComponents.privateMessageReceived = _components_PrivateMessageReceivedNotification__WEBPACK_IMPORTED_MODULE_11__["default"];
   app.routes.conversations = {
-    path: '/private-messages/conversations',
+    path: '/neoncube-private-messages/conversations',
     component: _components_ConversationsPage__WEBPACK_IMPORTED_MODULE_9__["default"]
   };
   app.routes.messages = {
-    path: '/private-messages/messages/:id',
+    path: '/neoncube-private-messages/messages/:id',
     component: _components_ConversationViewPage__WEBPACK_IMPORTED_MODULE_10__["default"]
   };
   (0,_addConversationsDropdown__WEBPACK_IMPORTED_MODULE_13__["default"])();
@@ -1404,7 +1404,7 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('privat
     items.add('privateMessgeReceived', {
       name: 'privateMessgeReceived',
       icon: 'fas fa-comment-alt',
-      label: app.translator.trans('private-messages.forum.notifications.notify_message_received')
+      label: app.translator.trans('neoncube-private-messages.forum.notifications.notify_message_received')
     });
   });
 });
@@ -1437,7 +1437,7 @@ var Conversation = /*#__PURE__*/function (_mixin) {
   (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(Conversation, _mixin);
   var _proto = Conversation.prototype;
   _proto.apiEndpoint = function apiEndpoint() {
-    return "/private-messages/conversations" + (this.exists ? "/" + this.data.id : '');
+    return "/neoncube-private-messages/conversations" + (this.exists ? "/" + this.data.id : '');
   };
   return Conversation;
 }(flarum_common_utils_mixin__WEBPACK_IMPORTED_MODULE_2___default()((flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default()), {
@@ -1514,7 +1514,7 @@ var Message = /*#__PURE__*/function (_mixin) {
   (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(Message, _mixin);
   var _proto = Message.prototype;
   _proto.apiEndpoint = function apiEndpoint() {
-    return "/private-messages/messages" + (this.exists ? "/" + this.data.id : '');
+    return "/neoncube-private-messages/messages" + (this.exists ? "/" + this.data.id : '');
   };
   return Message;
 }(flarum_common_utils_mixin__WEBPACK_IMPORTED_MODULE_2___default()((flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default()), {

@@ -5,7 +5,7 @@ import ConversationsList from './ConversationsList';
 
 export default class ConversationsDropdown extends NotificationsDropdown {
   static initAttrs(attrs) {
-    attrs.label ||= app.translator.trans('private-messages.forum.dropdown.tooltip');
+    attrs.label ||= app.translator.trans('neoncube-private-messages.forum.dropdown.tooltip');
     attrs.icon ||= 'fas fa-comment-alt';
     attrs.className = 'MessagesDropdown NotificationsDropdown';
 
