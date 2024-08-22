@@ -1,6 +1,8 @@
 # Private Messages
 
-A [Flarum](http://flarum.org) extension for adding private messages (PM's), sometimes known as "direct messages" (DM's), to your forum!
+A [Flarum](http://flarum.org) extension for adding private messages to your forum!
+
+Private messages (PM's) are also known as "direct messages" (DM's). e.g. "Send me a PM!" or "Send me a DM!"
 
 ## Installation
 
