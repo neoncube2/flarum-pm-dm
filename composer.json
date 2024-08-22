@@ -1,12 +1,14 @@
 {
     "name": "neoncube/flarum-private-messages",
-    "description": "Private messaging (direct messaging) [PM/DM] for Flarum.",
+    "description": "Private messages (direct messages) [PM's/DM's] for Flarum.",
     "keywords": [
         "flarum",
         "friendsofflarum",
         "settings",
         "private message",
         "direct messsage",
+        "private messaging",
+        "direct messaging",
         "PM",
         "DM"
     ],
@@ -43,7 +45,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Kyrne\\Whisper\\": "src/"
+            "Neoncube\\FlarumPrivateMessages\\": "src/"
         }
     },
     "extra": {

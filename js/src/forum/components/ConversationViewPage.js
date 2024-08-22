@@ -10,7 +10,7 @@ export default class ConversationViewPage extends Page {
 
     const idParam = m.route.param('id');
 
-    app.store.find('whisper/conversations', idParam).then((conversation) => {
+    app.store.find('private-messages/conversations', idParam).then((conversation) => {
       app.cache.conversations = [conversation];
       this.list = ConversationView.component({ conversation, mobile: true });
       m.redraw();

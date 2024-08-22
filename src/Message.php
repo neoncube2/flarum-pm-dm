@@ -1,21 +1,11 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper;
+namespace Neoncube\FlarumPrivateMessages;
 
 use Carbon\Carbon;
 use Flarum\Database\AbstractModel;
 use Flarum\User\User;
-use Kyrne\Whisper\Conversation;
+use Neoncube\FlarumPrivateMessages\Conversation;
 
 class Message extends AbstractModel
 {

@@ -1,22 +1,18 @@
 <?php
 
-
-namespace Kyrne\Whisper\Api\Controllers;
+namespace Neoncube\FlarumPrivateMessages\Api\Controllers;
 
 use Flarum\Api\Controller\AbstractCreateController;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Arr;
-use Kyrne\Whisper\Api\Serializers\ConversationRecipientSerializer;
-use Kyrne\Whisper\Commands\ReadMessage;
+use Neoncube\FlarumPrivateMessages\Api\Serializers\ConversationRecipientSerializer;
+use Neoncube\FlarumPrivateMessages\Commands\ReadMessage;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 
 
 class ReadMessageController extends AbstractCreateController
 {
-    /**
-     * @var string
-     */
     public $serializer = ConversationRecipientSerializer::class;
 
     protected $bus;

@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "@kyrne/whisper",
+    "name": "private-messages",
     "prettier": "@flarum/prettier-config",
     "dependencies": {
         "flarum-webpack-config": "^2.0.2",

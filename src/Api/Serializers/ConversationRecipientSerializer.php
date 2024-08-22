@@ -1,21 +1,10 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Api\Serializers;
-
+namespace Neoncube\FlarumPrivateMessages\Api\Serializers;
 
 use Flarum\Api\Serializer\AbstractSerializer;
 use Flarum\Api\Serializer\UserSerializer;
-use Kyrne\Whisper\ConversationUser;
+use Neoncube\FlarumPrivateMessages\ConversationUser;
 
 class ConversationRecipientSerializer extends AbstractSerializer
 {

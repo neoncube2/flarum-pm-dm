@@ -1,31 +1,14 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Api\Serializers;
+namespace Neoncube\FlarumPrivateMessages\Api\Serializers;
 
 use Flarum\Api\Serializer\AbstractSerializer;
-use Kyrne\Whisper\Conversation;
+use Neoncube\FlarumPrivateMessages\Conversation;
 
 class ConversationSerializer extends AbstractSerializer
 {
-    /**
-     * @var string
-     */
     protected $type = 'conversations';
 
-    /**
-     * @param array|object $conversation
-     * @return array
-     */
     protected function getDefaultAttributes($conversation)
     {
         if (!($conversation instanceof Conversation)) {

@@ -10,6 +10,6 @@ export default class Message extends mixin(Model, {
   number: Model.hasOne('number'),
 }) {
   apiEndpoint() {
-    return `/whisper/messages${this.exists ? `/${this.data.id}` : ''}`;
+    return `/private-messages/messages${this.exists ? `/${this.data.id}` : ''}`;
   }
 }

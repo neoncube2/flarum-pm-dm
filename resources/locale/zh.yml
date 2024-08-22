@@ -1,4 +1,4 @@
-littlecxm-whisper:
+private-messages:
   admin:
     settings:
       return_key: 按回车键发送私信

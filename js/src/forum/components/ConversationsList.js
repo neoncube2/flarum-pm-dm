@@ -52,8 +52,8 @@ export default class ConversationsList extends Component {
                 disabled: !app.forum.attribute('canMessage'),
               },
               app.forum.attribute('canMessage')
-                ? app.translator.trans('littlecxm-whisper.forum.chat.start')
-                : app.translator.trans('littlecxm-whisper.forum.chat.cant_start')
+                ? app.translator.trans('private-messages.forum.chat.start')
+                : app.translator.trans('private-messages.forum.chat.cant_start')
             )}
             {hasConversations && (
               <ul className="ConversationsList-list">

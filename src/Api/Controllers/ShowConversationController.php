@@ -1,47 +1,27 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Api\Controllers;
+namespace Neoncube\FlarumPrivateMessages\Api\Controllers;
 
 use Flarum\Api\Controller\AbstractShowController;
 use Flarum\User\Exception\PermissionDeniedException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Kyrne\Whisper\Api\Serializers\ConversationSerializer;
-use Kyrne\Whisper\Conversation;
-use Kyrne\Whisper\Message;
+use Neoncube\FlarumPrivateMessages\Api\Serializers\ConversationSerializer;
+use Neoncube\FlarumPrivateMessages\Conversation;
+use Neoncube\FlarumPrivateMessages\Message;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 
 class ShowConversationController extends AbstractShowController
 {
-
-    /**
-     * {@inheritdoc}
-     */
     public $serializer = ConversationSerializer::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public $include = [
         'messages',
         'recipients',
         'recipients.user'
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $conversationId = Arr::get($request->getQueryParams(), 'id');
@@ -68,12 +48,6 @@ class ShowConversationController extends AbstractShowController
         return $conversation;
     }
 
-    /**
-     * @param Conversation $conversation
-     * @param ServerRequestInterface $request
-     * @param array $include
-     * @throws \Tobscure\JsonApi\Exception\InvalidParameterException
-     */
     private function includeMessages(Conversation $conversation, ServerRequestInterface $request, array $include)
     {
         $limit = $this->extractLimit($request);
@@ -87,19 +61,11 @@ class ShowConversationController extends AbstractShowController
         $conversation->setRelation('messages', $allMessages);
     }
 
-    /**
-     * @param Conversation $conversation
-     * @return mixed
-     */
     private function loadMessageIds(Conversation $conversation)
     {
         return $conversation->messages()->latest()->pluck('id')->all();
     }
 
-    /**
-     * @param array $include
-     * @return array
-     */
     private function getMessageRelationships(array $include)
     {
         $prefixLength = strlen($prefix = 'posts.');
@@ -114,13 +80,6 @@ class ShowConversationController extends AbstractShowController
         return $relationships;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param Conversation $conversation
-     * @param $limit
-     * @return int|mixed
-     * @throws \Tobscure\JsonApi\Exception\InvalidParameterException
-     */
     private function getMessageOffset(ServerRequestInterface $request, Conversation $conversation, $limit)
     {
         $queryParams = $request->getQueryParams();
@@ -136,13 +95,6 @@ class ShowConversationController extends AbstractShowController
         return $offset;
     }
 
-    /**
-     * @param $conversation
-     * @param $offset
-     * @param $limit
-     * @param array $include
-     * @return mixed
-     */
     private function loadPosts($conversation, $offset, $limit, array $include)
     {
         $query = $conversation->messages();

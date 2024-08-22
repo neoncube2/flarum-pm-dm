@@ -9,10 +9,9 @@ import Model from 'flarum/common/Model';
 import ConversationsPage from './components/ConversationsPage';
 import ConversationViewPage from './components/ConversationViewPage';
 import Stream from 'flarum/common/utils/Stream';
-
 import addConversationsDropdown from './addConversationsDropdown';
 
-app.initializers.add('littlecxm-whisper', function (app) {
+app.initializers.add('private-messages', function (app) {
   app.store.models.messages = Message;
   app.store.models.conversations = Conversation;
   app.store.models.conversation_users = ConversationUser;
@@ -20,8 +19,10 @@ app.initializers.add('littlecxm-whisper', function (app) {
   User.prototype.conversations = Model.hasMany('conversations');
   User.prototype.unreadMessages = Model.attribute('unreadMessages');
 
-  app.routes.conversations = { path: '/whisper/conversations', component: ConversationsPage };
-  app.routes.messages = { path: '/whisper/messages/:id', component: ConversationViewPage };
+  app.notificationComponents.privateMessageReceived = PrivateMessageReceivedNotification;
+
+  app.routes.conversations = { path: '/private-messages/conversations', component: ConversationsPage };
+  app.routes.messages = { path: '/private-messages/messages/:id', component: ConversationViewPage };
 
   addConversationsDropdown();
 
@@ -48,5 +49,13 @@ app.initializers.add('littlecxm-whisper', function (app) {
         }
       });
     }
+  });
+
+  extend(NotificationGrid.prototype, 'notificationTypes', function (items) {
+    items.add('privateMessgeReceived', {
+      name: 'privateMessgeReceived',
+      icon: 'fas fa-message',
+      label: app.translator.trans('private-messages.forum.notifications.notify_message_received'),
+    });
   });
 });

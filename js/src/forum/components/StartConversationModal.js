@@ -20,7 +20,7 @@ export default class StartConversationModal extends Modal {
   }
 
   title() {
-    return app.translator.trans('littlecxm-whisper.forum.modal.title');
+    return app.translator.trans('private-messages.forum.modal.title');
   }
 
   className() {
@@ -32,15 +32,15 @@ export default class StartConversationModal extends Modal {
       <div className="Modal-body" onclick={(e) => e.stopImmediatePropagation()}>
         {this.already ? (
           [
-            <h2>{app.translator.trans('littlecxm-whisper.forum.modal.already', { username: username(this.recpient) })}</h2>,
-            <h2>{app.translator.trans('littlecxm-whisper.forum.modal.copied', { username: username(this.recpient) })}</h2>,
+            <h2>{app.translator.trans('private-messages.forum.modal.already', { username: username(this.recpient) })}</h2>,
+            <h2>{app.translator.trans('private-messages.forum.modal.copied', { username: username(this.recpient) })}</h2>,
           ]
         ) : (
           <div>
             <div class="helpText">
               {app.cache.conversationsRecipient !== null
-                ? app.translator.trans('littlecxm-whisper.forum.modal.help_start', { username: username(app.cache.conversationsRecipient) })
-                : app.translator.trans('littlecxm-whisper.forum.modal.help')}
+                ? app.translator.trans('private-messages.forum.modal.help_start', { username: username(app.cache.conversationsRecipient) })
+                : app.translator.trans('private-messages.forum.modal.help')}
             </div>
             <div className="AddRecipientModal-form">
               <RecipientSearch state={app.search} />
@@ -49,7 +49,7 @@ export default class StartConversationModal extends Modal {
                   <textarea
                     value={this.messageContent()}
                     oninput={withAttr('value', this.messageContent)}
-                    placeholder={app.translator.trans('littlecxm-whisper.forum.chat.text_placeholder')}
+                    placeholder={app.translator.trans('private-messages.forum.chat.text_placeholder')}
                     rows="3"
                   />
                   {Button.component(
@@ -58,7 +58,7 @@ export default class StartConversationModal extends Modal {
                       className: 'Button Button--primary',
                       disabled: !this.messageContent(),
                     },
-                    app.translator.trans('littlecxm-whisper.forum.modal.submit')
+                    app.translator.trans('private-messages.forum.modal.submit')
                   )}
                 </div>
               ) : (

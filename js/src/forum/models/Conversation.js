@@ -10,6 +10,6 @@ export default class Conversation extends mixin(Model, {
   updatedAt: Model.attribute('updatedAt', Model.transformDate),
 }) {
   apiEndpoint() {
-    return `/whisper/conversations${this.exists ? `/${this.data.id}` : ''}`;
+    return `/private-messages/conversations${this.exists ? `/${this.data.id}` : ''}`;
   }
 }

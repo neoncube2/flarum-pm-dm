@@ -1,23 +1,12 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Commands;
-
+namespace Neoncube\FlarumPrivateMessages\Commands;
 
 use Carbon\Carbon;
 use Flarum\User\Exception\PermissionDeniedException;
-use Kyrne\Whisper\Conversation;
-use Kyrne\Whisper\ConversationUser;
-use Kyrne\Whisper\Message;
+use Neoncube\FlarumPrivateMessages\Conversation;
+use Neoncube\FlarumPrivateMessages\ConversationUser;
+use Neoncube\FlarumPrivateMessages\Message;
 use Pusher\Pusher;
 
 class ReadMessageHandler

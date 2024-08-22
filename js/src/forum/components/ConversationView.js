@@ -179,10 +179,10 @@ export default class ConversationView extends Component {
           {avatar(this.user)}
 
           <div className="chat-about">
-            <div className="chat-with">{app.translator.trans('littlecxm-whisper.forum.chat.chat_with', { username: username(this.user) })}</div>
+            <div className="chat-with">{app.translator.trans('private-messages.forum.chat.chat_with', { username: username(this.user) })}</div>
             <div className="chat-num-messages">
               {app.translator.trans(
-                'littlecxm-whisper.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'),
+                'private-messages.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'),
                 { count: this.conversation.totalMessages() + this.newMessageCount }
               )}
             </div>
@@ -193,7 +193,7 @@ export default class ConversationView extends Component {
           [
             <div className="chat-history">
               <ul>
-                {this.notNew ? <li className="startConvo">{app.translator.trans('littlecxm-whisper.forum.chat.start_of_conversation')}</li> : ''}
+                {this.notNew ? <li className="startConvo">{app.translator.trans('private-messages.forum.chat.start_of_conversation')}</li> : ''}
                 {messages
                   ? messages
                       .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
@@ -258,7 +258,7 @@ export default class ConversationView extends Component {
             id="MessageTextArea"
             value={this.messageContent()}
             oninput={withAttr('value', this.typingPush.bind(this))}
-            placeholder={app.translator.trans('littlecxm-whisper.forum.chat.text_placeholder')}
+            placeholder={app.translator.trans('private-messages.forum.chat.text_placeholder')}
             rows="3"
           ></textarea>
 
@@ -268,7 +268,7 @@ export default class ConversationView extends Component {
               className: 'Button Button--primary',
               disabled: !this.messageContent() || !this.sendTimeout,
             },
-            app.translator.trans('littlecxm-whisper.forum.chat.send')
+            app.translator.trans('private-messages.forum.chat.send')
           )}
         </form>
       </div>

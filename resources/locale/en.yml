@@ -1,4 +1,4 @@
-littlecxm-whisper:
+private-messages:
   admin:
     settings:
       return_key: Return key sends message
@@ -32,3 +32,6 @@ littlecxm-whisper:
       cant_start: Can't Start Conversation
       text_placeholder: Type your message
       send: Send Message
+    notifications:
+      message_received: Test
+      notify_message_received: Someone messages me

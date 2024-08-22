@@ -1,21 +1,10 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Api\Controllers;
-
+namespace Neoncube\FlarumPrivateMessages\Api\Controllers;
 
 use Flarum\Api\Controller\AbstractListController;
-use Kyrne\Whisper\Api\Serializers\ConversationSerializer;
-use Kyrne\Whisper\Conversation;
+use Neoncube\FlarumPrivateMessages\Api\Serializers\ConversationSerializer;
+use Neoncube\FlarumPrivateMessages\Conversation;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 
@@ -29,7 +18,6 @@ class ListConversationsController extends AbstractListController
     ];
 
     public $limit = 12;
-
     public $maxLimit = 12;
 
     protected function data(ServerRequestInterface $request, Document $document)

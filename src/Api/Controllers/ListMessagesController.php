@@ -1,25 +1,15 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Api\Controllers;
+namespace Neoncube\FlarumPrivateMessages\Api\Controllers;
 
 
 use Flarum\Api\Controller\AbstractListController;
-use Kyrne\Whisper\Api\Serializers\MessageSerializer;
 use Tobscure\JsonApi\Document;
 use Flarum\User\Exception\PermissionDeniedException;
 use Illuminate\Support\Arr;
-use Kyrne\Whisper\Conversation;
-use Kyrne\Whisper\Message;
+use Neoncube\FlarumPrivateMessages\Api\Serializers\MessageSerializer;
+use Neoncube\FlarumPrivateMessages\Conversation;
+use Neoncube\FlarumPrivateMessages\Message;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ListMessagesController extends AbstractListController

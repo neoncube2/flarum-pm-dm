@@ -1,17 +1,17 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('littlecxm-whisper', () => {
+app.initializers.add('private-messages', () => {
   app.extensionData
-    .for('littlecxm-whisper')
+    .for('private-messages')
     .registerSetting({
-      setting: 'littlecxm-whisper.return_key',
+      setting: 'private-messages.return_key',
       type: 'bool',
-      label: app.translator.trans('littlecxm-whisper.admin.settings.return_key'),
+      label: app.translator.trans('private-messages.admin.settings.return_key'),
     })
     .registerPermission(
       {
         icon: 'fas fa-user-lock',
-        label: app.translator.trans('littlecxm-whisper.admin.permissions.start_label'),
+        label: app.translator.trans('private-messages.admin.permissions.start_label'),
         permission: 'startConversation',
       },
       'start'

@@ -1,28 +1,26 @@
 <?php
-/**
- *
- *  This file is part of kyrne/whisper
- *
- *  Copyright (c) 2020 Kyrne.
- *
- *  For the full copyright and license information, please view the license.md
- *  file that was distributed with this source code.
- *
- */
 
-namespace Kyrne\Whisper\Commands;
+namespace Neoncube\FlarumPrivateMessages\Commands;
 
-
+use Flarum\Notification\NotificationSyncer;
 use Flarum\User\Exception\PermissionDeniedException;
 use Flarum\User\User;
 use http\Message\Parser;
-use Kyrne\Whisper\Conversation;
-use Kyrne\Whisper\ConversationUser;
-use Kyrne\Whisper\Message;
+use Neoncube\FlarumPrivateMessages\Conversation;
+use Neoncube\FlarumPrivateMessages\ConversationUser;
+use Neoncube\FlarumPrivateMessages\Message;
+use Neoncube\FlarumPrivateMessages\Notifications\PrivateMessageReceivedBlueprint;
 use Pusher\Pusher;
 
 class NewMessageHandler
 {
+    protected $notifications;
+
+    public function __construct(NotificationSyncer $notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
     public function handle(NewMessage $command)
     {
         $actor = $command->actor;
@@ -50,21 +48,36 @@ class NewMessageHandler
 
         foreach (ConversationUser::where('conversation_id', $conversation->id)->pluck('user_id')->all() as $userId) {
             User::find($userId)->increment('unread_messages');
-            $this->pushNewMessage($userId, $message, $conversation->id);
+
+            $messageText = json_decode($message->message);
+
+            $this->pushNewMessage($message, $messageText, $conversation->id);
+            $this->sendNewMessageNotification($message, $messageText, $conversation);
         }
 
         return $message;
     }
 
-    public function pushNewMessage($userId, $message, $conversationId)
+    public function pushNewMessage($message, $messageText, $conversationId)
     {
         if (app()->bound(Pusher::class)) {
-            app(Pusher::class)->trigger('private-user' . $userId, 'newMessage', [
+            app(Pusher::class)->trigger('private-user' . $message->user_id, 'newMessage', [
                 'id' => $message->id,
-                'message' => json_decode($message->message),
+                'message' => $messageText,
                 'createdAt' => (new \DateTime($message->created_at))->format(\DateTime::RFC3339),
                 'conversationId' => $conversationId
             ]);
         }
+    }
+
+    public function sendNewMessageNotification($message, $messageText, $conversation) {
+        // print_r($messageText);
+        // print_r($conversation);
+        // die();
+
+        $this->notifications->sync(
+            new PrivateMessageReceivedBlueprint($userId, $message, $messageText, $conversation),
+            [$actor]
+        );
     }
 }
