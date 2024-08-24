@@ -52,7 +52,7 @@ class NewMessageHandler
             $messageText = json_decode($message->message);
 
             $this->pushNewMessage($message, $messageText, $conversation->id);
-            $this->sendNewMessageNotification($message, $messageText, $conversation);
+            $this->sendNewMessageNotification($message, $messageText, $conversation, $actor);
         }
 
         return $message;
@@ -70,14 +70,10 @@ class NewMessageHandler
         }
     }
 
-    public function sendNewMessageNotification($message, $messageText, $conversation) {
-        // print_r($messageText);
-        // print_r($conversation);
-        // die();
-
+    public function sendNewMessageNotification($message, $messageText, $conversation, $actor) {
         $this->notifications->sync(
-            new PrivateMessageReceivedBlueprint($userId, $message, $messageText, $conversation),
-            [$actor]
+            new PrivateMessageReceivedBlueprint($message, $messageText, $conversation, $actor),
+            [$message->user_id]
         );
     }
 }

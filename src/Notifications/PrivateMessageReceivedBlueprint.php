@@ -3,27 +3,26 @@
 namespace Neoncube\FlarumPrivateMessages\Notifications;
 
 use Flarum\Notification\Blueprint\BlueprintInterface;
-use Flarum\Post\Post;
-use Flarum\User\User;
+use Neoncube\FlarumPrivateMessages\Message;
 
 class PrivateMessageReceivedBlueprint implements BlueprintInterface
 {
-    public $post;
-
+    public $message;
+    public $messageText;
+    public $conversation;
     public $user;
 
-    public function __construct(Array $post, User $user)
+    public function __construct($message, $messageText, $conversation, $user)
     {
-        $this->post = $post;
+        $this->message = $message;
+        $this->messageText = $messageText;
+        $this->conversation = $conversation;
         $this->user = $user;
-
-        print_r($this->post);
-        die();
     }
 
     public function getSubject()
     {
-        return $this->post;
+        return $this->message;
     }
 
     public function getFromUser()
@@ -33,6 +32,11 @@ class PrivateMessageReceivedBlueprint implements BlueprintInterface
 
     public function getData()
     {
+        return [
+            'messageText' => $this->messageText,
+            'conversation' => $this->conversation,
+            'fromUser' => $this->user
+        ];
     }
 
     public static function getType()
@@ -42,6 +46,6 @@ class PrivateMessageReceivedBlueprint implements BlueprintInterface
 
     public static function getSubjectModel()
     {
-        return Post::class;
+        return Message::class;
     }
 }

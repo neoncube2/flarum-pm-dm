@@ -5,6 +5,8 @@ import ConversationsDropdown from './components/ConversationsDropdown';
 
 export default function () {
   extend(HeaderSecondary.prototype, 'items', function (items) {
+    console.log(app.session.user);
+
     if (app.forum.attribute('canMessage') || (app.session.user && app.session.user.conversations().length)) {
       items.add('Messages', <ConversationsDropdown />, 20);
     }

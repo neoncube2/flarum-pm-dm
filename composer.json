@@ -57,7 +57,7 @@
             "title": "Private messages",
             "icon": {
                 "name": "fas fa-comment-alt",
-                "background": "#FFF",
+                "background": "#ADD445",
                 "color": "#000"
             },
             "category": "feature"

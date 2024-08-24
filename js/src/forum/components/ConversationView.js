@@ -345,10 +345,12 @@ export default class ConversationView extends Component {
             })
             .then((response) => {
               const newNumber = response.data.attributes.lastRead;
-              let unreadMessages = 0;
               const lastUnreadMessage = app.session.user.unreadMessages();
 
-              if (lastUnreadMessage !== 0) unreadMessages = lastUnreadMessage - (newNumber - oldNumber);
+              const unreadMessages = lastUnreadMessage === 0 ?
+                0
+                :
+                lastUnreadMessage - (newNumber - oldNumber);
 
               if (unreadMessages >= 0) {
                 app.session.user.pushAttributes({

@@ -26,6 +26,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_forum_components_HeaderSecondary__WEBPACK_IMPORTED_MODULE_2___default().prototype), 'items', function (items) {
+    console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session).user);
     if (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('canMessage') || (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session).user && flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session.user.conversations().length) {
       items.add('Messages', m(_components_ConversationsDropdown__WEBPACK_IMPORTED_MODULE_3__["default"], null), 20);
     }
@@ -368,9 +369,8 @@ var ConversationView = /*#__PURE__*/function (_Component) {
           }
         }).then(function (response) {
           var newNumber = response.data.attributes.lastRead;
-          var unreadMessages = 0;
           var lastUnreadMessage = flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().session.user.unreadMessages();
-          if (lastUnreadMessage !== 0) unreadMessages = lastUnreadMessage - (newNumber - oldNumber);
+          var unreadMessages = lastUnreadMessage === 0 ? 0 : lastUnreadMessage - (newNumber - oldNumber);
           if (unreadMessages >= 0) {
             flarum_forum_app__WEBPACK_IMPORTED_MODULE_11___default().session.user.pushAttributes({
               unreadMessages: unreadMessages
@@ -514,12 +514,18 @@ var ConversationsDropdown = /*#__PURE__*/function (_NotificationsDropdow) {
   _proto.getMenu = function getMenu() {
     return m("form", {
       className: 'Dropdown-menu ' + this.attrs.menuClassName
-    }, !!this.showing && m(_ConversationsList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    }, this.showing && m(_ConversationsList__WEBPACK_IMPORTED_MODULE_3__["default"], {
       mobile: false
     }));
   };
   _proto.goToRoute = function goToRoute() {
     m.route(flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().route('conversations'));
+  };
+  _proto.getUnreadCount = function getUnreadCount() {
+    return flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session.user.unreadMessages();
+  };
+  _proto.getNewCount = function getNewCount() {
+    return this.getUnreadCount();
   };
   return ConversationsDropdown;
 }((flarum_forum_components_NotificationsDropdown__WEBPACK_IMPORTED_MODULE_2___default()));
@@ -593,6 +599,8 @@ var ConversationsList = /*#__PURE__*/function (_Component) {
     var redrawConversationsList = function redrawConversationsList() {
       return m.redraw();
     };
+    console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().session).user);
+    console.log(flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().session.user.conversations());
     return m("div", {
       className: "ConversationsList"
     }, m("div", {
@@ -650,12 +658,8 @@ var ConversationsList = /*#__PURE__*/function (_Component) {
   };
   _proto.load = function load() {
     var _this4 = this;
-    if ((flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().cache).conversations && !this.mobile) {
-      return;
-    }
-    if (this.mobile) {
-      (flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().cache).conversations = [];
-    }
+    if ((flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().cache).conversations && !this.mobile) return;
+    if (this.mobile) (flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().cache).conversations = [];
     this.loading = true;
     m.redraw();
     flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().store.find('neoncube-private-messages/conversations').then(function (results) {
@@ -1086,9 +1090,14 @@ var StartConversationModal = /*#__PURE__*/function (_Modal) {
     }).then(function (conversation) {
       if (!conversation.notNew()) {
         _this.conversations.push(conversation);
+        console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().session).user);
+        console.log(flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().session.user.conversations());
+
         // const preconv = app.session.user.conversations();
         // preconv.push(conversation);
         // app.session.user.conversations = Stream(preconv);
+
+        // Need to review Github diff after this point
         m.redraw();
         flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().modal.close();
       } else {

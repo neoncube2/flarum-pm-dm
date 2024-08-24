@@ -1,6 +1,5 @@
 import app from 'flarum/forum/app';
 import NotificationsDropdown from 'flarum/forum/components/NotificationsDropdown';
-
 import ConversationsList from './ConversationsList';
 
 export default class ConversationsDropdown extends NotificationsDropdown {
@@ -19,10 +18,18 @@ export default class ConversationsDropdown extends NotificationsDropdown {
   }
 
   getMenu() {
-    return <form className={'Dropdown-menu ' + this.attrs.menuClassName}>{!!this.showing && <ConversationsList mobile={false} />}</form>;
+    return <form className={'Dropdown-menu ' + this.attrs.menuClassName}>{this.showing && <ConversationsList mobile={false} />}</form>;
   }
 
   goToRoute() {
     m.route(app.route('conversations'));
+  }
+
+  getUnreadCount() {
+    return app.session.user.unreadMessages();
+  }
+
+  getNewCount() {
+    return this.getUnreadCount();
   }
 }

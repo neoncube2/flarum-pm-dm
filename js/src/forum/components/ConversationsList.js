@@ -41,6 +41,10 @@ export default class ConversationsList extends Component {
 
     const redrawConversationsList = () => m.redraw();
 
+    console.log(app.session.user);
+    console.log(app.session.user.conversations());
+
+
     return (
       <div className="ConversationsList">
         <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="container clearfix">
@@ -113,13 +117,11 @@ export default class ConversationsList extends Component {
   }
 
   load() {
-    if (app.cache.conversations && !this.mobile) {
+    if (app.cache.conversations && !this.mobile)
       return;
-    }
 
-    if (this.mobile) {
+    if (this.mobile)
       app.cache.conversations = [];
-    }
 
     this.loading = true;
     m.redraw();
