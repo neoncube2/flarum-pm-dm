@@ -45,7 +45,7 @@ return [
         }),
 
     (new Extend\Settings())
-        ->serializeToForum('neoncubePrivateMessagesReturnKey', 'neoncube-neoncube-private-messages.return_key', function ($value) {
+        ->serializeToForum('neoncubePrivateMessagesReturnKey', 'neoncube-private-messages.return_key', function ($value) {
             return (bool)$value;
         }),
     // (new Extend\ApiSerializer(CurrentUserSerializer::class))
