@@ -92,7 +92,6 @@ export default class StartConversationModal extends Modal {
           // preconv.push(conversation);
           // app.session.user.conversations = Stream(preconv);
 
-
           // Need to review Github diff after this point
           m.redraw();
           app.modal.close();

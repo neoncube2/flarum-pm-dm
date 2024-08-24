@@ -181,7 +181,9 @@ export default class ConversationView extends Component {
           {avatar(this.user)}
 
           <div className="chat-about">
-            <div className="chat-with">{app.translator.trans('neoncube-private-messages.forum.chat.chat_with', { username: username(this.user) })}</div>
+            <div className="chat-with">
+              {app.translator.trans('neoncube-private-messages.forum.chat.chat_with', { username: username(this.user) })}
+            </div>
             <div className="chat-num-messages">
               {app.translator.trans(
                 'neoncube-private-messages.forum.chat.messages_' + (parseInt(this.conversation.totalMessages()) > 1 ? 'multiple' : 'single'),
@@ -195,40 +197,44 @@ export default class ConversationView extends Component {
           [
             <div className="chat-history">
               <ul>
-                {this.notNew ? <li className="startConvo">{app.translator.trans('neoncube-private-messages.forum.chat.start_of_conversation')}</li> : ''}
+                {this.notNew ? (
+                  <li className="startConvo">{app.translator.trans('neoncube-private-messages.forum.chat.start_of_conversation')}</li>
+                ) : (
+                  ''
+                )}
                 {messages
                   ? messages
-                    .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
-                    .sort((a, b) => {
-                      return a.createdAt() - b.createdAt();
-                    })
-                    .map((message, i) => {
-                      const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
-                      return (
-                        <li className="clearfix message-content">
-                          <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
-                            <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
-                              {avatar(myMessage ? app.session.user : message.user())}
+                      .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
+                      .sort((a, b) => {
+                        return a.createdAt() - b.createdAt();
+                      })
+                      .map((message, i) => {
+                        const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
+                        return (
+                          <li className="clearfix message-content">
+                            <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
+                              <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
+                                {avatar(myMessage ? app.session.user : message.user())}
+                              </div>
+                              <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
+                              <span className="message-data-time">{humanTime(message.createdAt())}</span>
                             </div>
-                            <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
-                            <span className="message-data-time">{humanTime(message.createdAt())}</span>
-                          </div>
-                          <MessageText
-                            content={message.message()}
-                            className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
-                          />
-                          {myMessage ? (
-                            parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
-                              <span className="message-read">{icon('fas fa-check')}</span>
+                            <MessageText
+                              content={message.message()}
+                              className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
+                            />
+                            {myMessage ? (
+                              parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
+                                <span className="message-read">{icon('fas fa-check')}</span>
+                              ) : (
+                                ''
+                              )
                             ) : (
                               ''
-                            )
-                          ) : (
-                            ''
-                          )}
-                        </li>
-                      );
-                    })
+                            )}
+                          </li>
+                        );
+                      })
                   : ''}
                 {this.messageContent() ? (
                   <li>
@@ -347,10 +353,7 @@ export default class ConversationView extends Component {
               const newNumber = response.data.attributes.lastRead;
               const lastUnreadMessage = app.session.user.unreadMessages();
 
-              const unreadMessages = lastUnreadMessage === 0 ?
-                0
-                :
-                lastUnreadMessage - (newNumber - oldNumber);
+              const unreadMessages = lastUnreadMessage === 0 ? 0 : lastUnreadMessage - (newNumber - oldNumber);
 
               if (unreadMessages >= 0) {
                 app.session.user.pushAttributes({

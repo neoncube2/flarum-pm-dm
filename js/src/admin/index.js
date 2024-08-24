@@ -12,7 +12,7 @@ app.initializers.add('neoncube-private-messages', () => {
       {
         icon: 'fas fa-user-lock',
         label: app.translator.trans('neoncube-private-messages.admin.permissions.start_label'),
-        permission: 'startConversation'
+        permission: 'startConversation',
       },
       'start'
     );

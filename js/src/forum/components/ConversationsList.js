@@ -12,7 +12,7 @@ export default class ConversationsList extends Component {
     this.loading = false;
   }
 
-  onupdate() { }
+  onupdate() {}
 
   onbeforeupdate() {
     const list = $('.ConversationsList-list');
@@ -106,7 +106,7 @@ export default class ConversationsList extends Component {
           app.cache.conversations.push(result);
         });
       })
-      .catch(() => { })
+      .catch(() => {})
       .then(() => {
         this.loading = false;
         m.redraw();
@@ -114,11 +114,9 @@ export default class ConversationsList extends Component {
   }
 
   load() {
-    if (app.cache.conversations && !this.mobile)
-      return;
+    if (app.cache.conversations && !this.mobile) return;
 
-    if (this.mobile)
-      app.cache.conversations = [];
+    if (this.mobile) app.cache.conversations = [];
 
     this.loading = true;
     m.redraw();
@@ -129,7 +127,7 @@ export default class ConversationsList extends Component {
         delete results.payload;
         app.cache.conversations = results;
       })
-      .catch(() => { })
+      .catch(() => {})
       .then(() => {
         this.loading = false;
         m.redraw();
