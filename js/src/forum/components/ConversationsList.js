@@ -37,13 +37,10 @@ export default class ConversationsList extends Component {
       this.conversationComponent = ConversationView.component({ conversation: this.currentConversation, mobile: this.mobile });
     }
 
+    // This used to use app.session.user.conversations(). Not sure this makes sense, or if it makes sense to reload when opening the conversations dropdown?
     const hasConversations = conversations?.length > 0;
 
     const redrawConversationsList = () => m.redraw();
-
-    console.log(app.session.user);
-    console.log(app.session.user.conversations());
-
 
     return (
       <div className="ConversationsList">

@@ -26,8 +26,11 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_0__.extend)((flarum_forum_components_HeaderSecondary__WEBPACK_IMPORTED_MODULE_2___default().prototype), 'items', function (items) {
-    console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session).user);
-    if (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('canMessage') || (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session).user && flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().session.user.conversations().length) {
+    // TODO: It used to be that the conversations icon was also shown if the user had any conversations, but I've commented this out,
+    // because it wasn't working, at least for me.
+    // I think a better approach would be to load a count of how many conversations a user has, instead of actually loading all conversations
+    // whenever loading a user.
+    if (flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().forum.attribute('canMessage') /* || (app.session.user && app.session.user.conversations().length)*/) {
       items.add('Messages', m(_components_ConversationsDropdown__WEBPACK_IMPORTED_MODULE_3__["default"], null), 20);
     }
   });
@@ -595,12 +598,12 @@ var ConversationsList = /*#__PURE__*/function (_Component) {
         mobile: this.mobile
       });
     }
+
+    // This used to use app.session.user.conversations(). Not sure this makes sense, or if it makes sense to reload when opening the conversations dropdown?
     var hasConversations = (conversations == null ? void 0 : conversations.length) > 0;
     var redrawConversationsList = function redrawConversationsList() {
       return m.redraw();
     };
-    console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().session).user);
-    console.log(flarum_forum_app__WEBPACK_IMPORTED_MODULE_6___default().session.user.conversations());
     return m("div", {
       className: "ConversationsList"
     }, m("div", {
@@ -1090,8 +1093,6 @@ var StartConversationModal = /*#__PURE__*/function (_Modal) {
     }).then(function (conversation) {
       if (!conversation.notNew()) {
         _this.conversations.push(conversation);
-        console.log((flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().session).user);
-        console.log(flarum_forum_app__WEBPACK_IMPORTED_MODULE_7___default().session.user.conversations());
 
         // const preconv = app.session.user.conversations();
         // preconv.push(conversation);

@@ -20,8 +20,8 @@ return [
         ->route('/neoncube-private-messages/messages/{id}', 'neoncube-private-messages.messages')
         ->route('/neoncube-private-messages/conversations', 'neoncube-private-messages.conversation'),
     new Extend\Locales(__DIR__ . '/resources/locale'),
-    (new Extend\Model(User::class))
-        ->hasMany('conversations', ConversationUser::class, 'user_id'),
+    // (new Extend\Model(User::class))
+    //     ->hasMany('conversations', ConversationUser::class, 'user_id'),
     (new Extend\Routes('api'))
         ->get('/neoncube-private-messages/conversations', 'neoncube-private-messages.conversations.index', Controllers\ListConversationsController::class)
         ->get('/neoncube-private-messages/messages/{id}', 'neoncube-private-messages.messages.list', Controllers\ListMessagesController::class)
@@ -48,17 +48,17 @@ return [
         ->serializeToForum('neoncubePrivateMessagesReturnKey', 'neoncube-neoncube-private-messages.return_key', function ($value) {
             return (bool)$value;
         }),
-    (new Extend\ApiSerializer(CurrentUserSerializer::class))
-        ->hasMany('conversations', ConversationRecipientSerializer::class),
+    // (new Extend\ApiSerializer(CurrentUserSerializer::class))
+    //     ->hasMany('conversations', ConversationRecipientSerializer::class),
 
-    (new Extend\ApiController(Controller\ListUsersController::class))
-        ->addInclude('conversations'),
-    (new Extend\ApiController(Controller\ShowUserController::class))
-        ->addInclude('conversations'),
-    (new Extend\ApiController(Controller\CreateUserController::class))
-        ->addInclude('conversations'),
-    (new Extend\ApiController(Controller\UpdateUserController::class))
-        ->addInclude('conversations'),
+    // (new Extend\ApiController(Controller\ListUsersController::class))
+    //     ->addInclude('conversations'),
+    // (new Extend\ApiController(Controller\ShowUserController::class))
+    //     ->addInclude('conversations'),
+    // (new Extend\ApiController(Controller\CreateUserController::class))
+    //     ->addInclude('conversations'),
+    // (new Extend\ApiController(Controller\UpdateUserController::class))
+    //     ->addInclude('conversations'),
     (new Extend\Notification())
         ->type(PrivateMessageReceivedBlueprint::class, MessageSerializer::class, ['alert', 'email']),
 ];
