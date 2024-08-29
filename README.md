@@ -6,8 +6,8 @@ Private messages (PM's) are also known as "direct messages" (DM's). (e.g. "Send 
 
 ## Installation
 
-	composer remove kyrne/whisper
-	composer remove littlecxm/whisper
+	composer remove kyrne/whisper --no-update
+	composer remove littlecxm/whisper --no-update
     composer require neoncube/flarum-private-messages:"*"
 
 ## Updating
