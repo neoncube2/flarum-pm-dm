@@ -9,7 +9,8 @@ use Flarum\Extend;
 use Flarum\User\User;
 use Neoncube\FlarumPrivateMessages\Api\Controllers;
 use Neoncube\FlarumPrivateMessages\Api\Serializers\ConversationRecipientSerializer;
-use Neoncube\FlarumPrivateMessages\Notifications\PrivateMessageReceivedBlueprint;
+use Neoncube\FlarumPrivateMessages\Api\Serializers\MessageSerializer;
+use Neoncube\FlarumPrivateMessages\Notifications\NewPrivateMessageBlueprint;
 
 return [
     (new Extend\Frontend('admin'))
@@ -60,5 +61,7 @@ return [
     // (new Extend\ApiController(Controller\UpdateUserController::class))
     //     ->addInclude('conversations'),
     (new Extend\Notification())
-        ->type(PrivateMessageReceivedBlueprint::class, MessageSerializer::class, ['alert', 'email']),
+        ->type(NewPrivateMessageBlueprint::class, MessageSerializer::class, ['alert', 'email']),
+    (new Extend\View)
+        ->namespace('flarum-private-messages', __DIR__.'/views'),
 ];

@@ -9,7 +9,7 @@ use http\Message\Parser;
 use Neoncube\FlarumPrivateMessages\Conversation;
 use Neoncube\FlarumPrivateMessages\ConversationUser;
 use Neoncube\FlarumPrivateMessages\Message;
-use Neoncube\FlarumPrivateMessages\Notifications\PrivateMessageReceivedBlueprint;
+use Neoncube\FlarumPrivateMessages\Notifications\NewPrivateMessageBlueprint;
 use Pusher\Pusher;
 
 class NewMessageHandler
@@ -47,12 +47,14 @@ class NewMessageHandler
         $message->save();
 
         foreach (ConversationUser::where('conversation_id', $conversation->id)->pluck('user_id')->all() as $userId) {
-            User::find($userId)->increment('unread_messages');
+            $recipient = User::find($userId);
+            
+            $recipient->increment('unread_messages');
 
             $messageText = json_decode($message->message);
 
-            $this->pushNewMessage($message, $messageText, $conversation->id);
-            $this->sendNewMessageNotification($message, $messageText, $conversation, $actor);
+            $this->pushNewMessage($message, $messageText, $conversation->id,);
+            $this->sendNewMessageNotification($message, $messageText, $conversation, $actor, $recipient);
         }
 
         return $message;
@@ -70,10 +72,10 @@ class NewMessageHandler
         }
     }
 
-    public function sendNewMessageNotification($message, $messageText, $conversation, $actor) {
+    public function sendNewMessageNotification($message, $messageText, $conversation, $actor, $recipient) {
         $this->notifications->sync(
-            new PrivateMessageReceivedBlueprint($message, $messageText, $conversation, $actor),
-            [$message->user_id]
+            new NewPrivateMessageBlueprint($message, $messageText, $conversation, $actor),
+            [$recipient]
         );
     }
 }
