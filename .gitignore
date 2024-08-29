@@ -7,4 +7,3 @@ bower_components
 .idea
 .floo*
 composer.lock
-dist/
