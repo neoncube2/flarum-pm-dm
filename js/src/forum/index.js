@@ -9,11 +9,11 @@ import User from 'flarum/common/models/User';
 import Model from 'flarum/common/Model';
 import ConversationsPage from './components/ConversationsPage';
 import ConversationViewPage from './components/ConversationViewPage';
-import NewPrivateMessageNotification from './components/NewPrivateMessageNotification';
+import PrivateMessageReceivedNotification from './components/PrivateMessageReceivedNotification';
 import Stream from 'flarum/common/utils/Stream';
 import addConversationsDropdown from './addConversationsDropdown';
 
-app.initializers.add('neoncube-private-messages', (app) => {
+app.initializers.add('neoncube-private-messages', function (app) {
   app.store.models.messages = Message;
   app.store.models.conversations = Conversation;
   app.store.models.conversation_users = ConversationUser;
@@ -21,14 +21,14 @@ app.initializers.add('neoncube-private-messages', (app) => {
   User.prototype.conversations = Model.hasMany('conversations');
   User.prototype.unreadMessages = Model.attribute('unreadMessages');
 
-  app.notificationComponents.newPrivateMessage = NewPrivateMessageNotification;
+  app.notificationComponents.privateMessageReceived = PrivateMessageReceivedNotification;
 
   app.routes.conversations = { path: '/neoncube-private-messages/conversations', component: ConversationsPage };
   app.routes.messages = { path: '/neoncube-private-messages/messages/:id', component: ConversationViewPage };
 
   addConversationsDropdown();
 
-  extend(IndexPage.prototype, 'oncreate', () => {
+  extend(IndexPage.prototype, 'oncreate', function () {
     if (app.pusher) {
       app.pusher.then((object) => {
         const channels = object.channels;
@@ -42,7 +42,7 @@ app.initializers.add('neoncube-private-messages', (app) => {
     }
   });
 
-  extend(IndexPage.prototype, 'onremove', () => {
+  extend(IndexPage.prototype, 'onremove', function () {
     if (app.pusher) {
       app.pusher.then((object) => {
         const channels = object.channels;
@@ -53,11 +53,11 @@ app.initializers.add('neoncube-private-messages', (app) => {
     }
   });
 
-  extend(NotificationGrid.prototype, 'notificationTypes', (items) => {
-    items.add('newPrivateMessage', {
-      name: 'newPrivateMessage',
+  extend(NotificationGrid.prototype, 'notificationTypes', function (items) {
+    items.add('privateMessgeReceived', {
+      name: 'privateMessgeReceived',
       icon: 'fas fa-comment-alt',
-      label: app.translator.trans('neoncube-private-messages.forum.notifications.new_private_message'),
+      label: app.translator.trans('neoncube-private-messages.forum.notifications.notify_message_received'),
     });
   });
 });

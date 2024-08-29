@@ -3,18 +3,16 @@
 namespace Neoncube\FlarumPrivateMessages\Notifications;
 
 use Flarum\Notification\Blueprint\BlueprintInterface;
-use Flarum\Notification\MailableInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Neoncube\FlarumPrivateMessages\Message;
 
-class NewPrivateMessageBlueprint implements BlueprintInterface, MailableInterface
+class PrivateMessageReceivedBlueprint implements BlueprintInterface
 {
     public $message;
     public $messageText;
     public $conversation;
     public $user;
 
-    public function __construct(Message $message, $messageText, $conversation, $user)
+    public function __construct($message, $messageText, $conversation, $user)
     {
         $this->message = $message;
         $this->messageText = $messageText;
@@ -43,25 +41,11 @@ class NewPrivateMessageBlueprint implements BlueprintInterface, MailableInterfac
 
     public static function getType()
     {
-        return 'newPrivateMessage';
+        return 'privateMessageReceived';
     }
 
     public static function getSubjectModel()
     {
         return Message::class;
-    }
-
-    public function getEmailView()
-    {
-        // HTML?
-        return ['text' => 'flarum-private-messages::emails.newPrivateMessage'];
-    }
-
-    public function getEmailSubject(TranslatorInterface $translator)
-    {
-        return $translator->trans('neoncube-private-messages.forum.notifications.email.new_private_message.subject', [
-             '{user}' => $this->user->display_name,
-            // '{title}' => $this->post->discussion->title
-        ]);
     }
 }

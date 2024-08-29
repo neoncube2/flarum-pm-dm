@@ -34,8 +34,4 @@ neoncube-private-messages:
       send: Send Message
     notifications:
       message_received: Test
-      new_private_message: Someone messages me
-      email:
-        new_private_message:
-          subject: New message from {user} 
-          body: 'You have received a private message from {user}:<br /><br />{message}<br /><br />To view all of your messages from {user}, please go to {url}'
+      notify_message_received: Someone messages me
