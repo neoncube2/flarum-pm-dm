@@ -43,46 +43,44 @@ export default class ConversationsList extends Component {
     const redrawConversationsList = () => m.redraw();
 
     return (
-      <div className="ConversationsList">
-        <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="container clearfix">
-          <div style={this.mobile ? 'float: unset; margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
-            {Button.component(
-              {
-                onclick: this.showModal.bind(this),
-                className: 'Button Button--primary',
-                disabled: !app.forum.attribute('canMessage'),
-              },
-              app.forum.attribute('canMessage')
-                ? app.translator.trans('neoncube-private-messages.forum.chat.start')
-                : app.translator.trans('neoncube-private-messages.forum.chat.cant_start')
-            )}
-            {hasConversations && (
-              <ul className="ConversationsList-list">
-                {Array.isArray(conversations) &&
-                  conversations.map((conversation, index) => {
-                    return (
-                      <UserListItem
-                        conversation={conversation}
-                        index={index}
-                        active={this.mobile ? false : this.currentConversation === conversation}
-                        onclick={(e) => {
-                          if (this.mobile) {
-                            m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
-                          } else {
-                            this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
+      <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="ConversationsList">
+        <div style={this.mobile ? 'margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
+          {Button.component(
+            {
+              onclick: this.showModal.bind(this),
+              className: 'Button Button--primary',
+              disabled: !app.forum.attribute('canMessage'),
+            },
+            app.forum.attribute('canMessage')
+              ? app.translator.trans('neoncube-private-messages.forum.chat.start')
+              : app.translator.trans('neoncube-private-messages.forum.chat.cant_start')
+          )}
+          {hasConversations && (
+            <ul className="ConversationsList-list">
+              {Array.isArray(conversations) &&
+                conversations.map((conversation, index) => {
+                  return (
+                    <UserListItem
+                      conversation={conversation}
+                      index={index}
+                      active={this.mobile ? false : this.currentConversation === conversation}
+                      onclick={(e) => {
+                        if (this.mobile) {
+                          m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
+                        } else {
+                          this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
 
-                            redrawConversationsList();
-                          }
-                        }}
-                      />
-                    );
-                  })}
-              </ul>
-            )}
-          </div>
-
-          {!this.mobile && this.conversationComponent}
+                          redrawConversationsList();
+                        }
+                      }}
+                    />
+                  );
+                })}
+            </ul>
+          )}
         </div>
+
+        {!this.mobile && this.conversationComponent}
       </div>
     );
   }

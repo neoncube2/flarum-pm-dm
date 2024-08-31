@@ -1,5 +1,7 @@
 .MessagesPage {
-  .chat, .container.clearfix {
+
+  .chat,
+  .container.clearfix {
     width: 100% !important;
     max-width: unset;
   }
@@ -23,29 +25,36 @@
     background-color: @primary-color;
   }
 
-  @-webkit-keyframes mercuryTypingAnimation{
-    0%{
-      -webkit-transform:translateY(0px)
+  @-webkit-keyframes mercuryTypingAnimation {
+    0% {
+      -webkit-transform: translateY(0px)
     }
-    28%{
-      -webkit-transform:translateY(-5px)
+
+    28% {
+      -webkit-transform: translateY(-5px)
     }
-    44%{
-      -webkit-transform:translateY(0px)
+
+    44% {
+      -webkit-transform: translateY(0px)
     }
   }
 
-  .tidot:nth-child(1){
-    -webkit-animation-delay:200ms;
+  .tidot:nth-child(1) {
+    -webkit-animation-delay: 200ms;
   }
-  .tidot:nth-child(2){
-    -webkit-animation-delay:300ms;
+
+  .tidot:nth-child(2) {
+    -webkit-animation-delay: 300ms;
   }
-  .tidot:nth-child(3){
-    -webkit-animation-delay:400ms;
+
+  .tidot:nth-child(3) {
+    -webkit-animation-delay: 400ms;
   }
 
   .Dropdown-menu {
+    display: flex;
+    max-height: ~"calc(100vh - var(--header-height) - 0.5em)";
+
     @media(min-width: @screen-desktop) {
       width: 725px;
     }
@@ -59,7 +68,20 @@
 }
 
 .ConversationsList {
-  *, *:before, *:after {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-auto-rows: 100%;
+  flex: 1;
+  margin: 0 auto;
+  max-width: 890px;
+  padding: 0;
+  background: @control-bg;
+  border-radius: @border-radius;
+  .box-shadow(0 2px 6px @shadow-color);
+
+  *,
+  *:before,
+  *:after {
     box-sizing: border-box;
   }
 
@@ -67,19 +89,11 @@
     overflow-y: auto;
   }
 
-  .container {
-    margin: 0 auto;
-    max-width: 890px;
-    padding: 0;
-    background: @control-bg;
-    border-radius: @border-radius;
-    .box-shadow(0 2px 6px @shadow-color);
-  }
-
   @media(min-width: @screen-desktop) {
     .container {
       width: 890px;
     }
+
     .chat {
       width: 640px
     }
@@ -92,8 +106,8 @@
   }
 
   .people-list {
-    width: 250px;
-    float: left;
+    display: flex;
+    flex-direction: column;
 
     .Button--primary {
       margin: 15px 10px;
@@ -103,7 +117,6 @@
     ul {
       list-style: none;
       padding: 10px;
-      max-height: 770px;
 
       .UserListItem {
         cursor: pointer;
@@ -146,6 +159,7 @@
           }
 
         }
+
         .Avatar {
           width: 40px;
           height: 40px;
@@ -174,8 +188,8 @@
   }
 
   .chat {
-    max-width: 640px;
-    float: left;
+    display: flex;
+    flex-direction: column;
     background: @body-bg;
     border-radius: @border-radius;
 
@@ -218,9 +232,9 @@
     }
 
     .chat-history {
+      flex: 1;
       padding: 0;
       overflow-y: scroll;
-      height: 50vh;
 
       .message-read {
         float: right;
@@ -353,7 +367,8 @@
         color: #FF4136;
       }
 
-      .fa-file-o, .fa-file-image-o {
+      .fa-file-o,
+      .fa-file-image-o {
         font-size: 16px;
         color: gray;
         cursor: pointer;
@@ -370,7 +385,9 @@
     }
   }
 
-  .online, .offline, .me {
+  .online,
+  .offline,
+  .me {
     margin-right: 3px;
     font-size: 10px;
   }
@@ -450,6 +467,7 @@
 .Button--cancel {
   margin-left: 15px;
 }
+
 .RecipientLabel {
   font-size: 85%;
   font-weight: 600;
@@ -494,6 +512,7 @@
     }
   }
 }
+
 .AddRecipientModal-form {
   .RecipientsInput-selected {
     margin: 2vh 0;
@@ -507,7 +526,7 @@
     left: 0;
     right: 0;
 
-    > li > a {
+    >li>a {
       white-space: normal;
     }
 
@@ -539,5 +558,3 @@
     }
   }
 }
-
-

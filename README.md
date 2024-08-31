@@ -4,6 +4,8 @@ A [Flarum](http://flarum.org) extension for adding private messages to your foru
 
 Private messages (PM's) are also known as "direct messages" (DM's). (e.g. "Send me a PM!" or "Send me a DM!")
 
+![flarum-private-messages-screenshot](https://raw.githubusercontent.com/neoncube2/flarum-private-messages/main/resources/screenshot.jpg)
+
 ## Installation
 
 	composer remove kyrne/whisper --no-update
