@@ -172,10 +172,6 @@ export default class ConversationView extends Component {
   view(vnode) {
     const messages = app.cache.messages[this.conversation.id()];
 
-    console.log('drawing');
-    console.log(messages);
-    console.log(this.loading);
-
     return (
       <div className="chat">
         <div className="chat-header clearfix">
@@ -328,19 +324,14 @@ export default class ConversationView extends Component {
   }
 
   getMessages(offset = 0) {
-    console.log('loading messages');
-    console.log(this.isNew);
     if (!this.isNew) return;
-    console.log(offset);
 
     app.store
       .find('neoncube-private-messages/messages', this.conversation.id(), { offset })
       .then((results) => {
-        console.log(results);
         delete results.payload;
 
         if (this.firstLoad) {
-          console.log('first load');
           const oldNumber = this.meRecipient.lastRead();
           app
             .request({
@@ -371,13 +362,10 @@ export default class ConversationView extends Component {
 
         app.cache.messages[this.conversation.id()].push(...results);
 
-        console.log(app.cache.messages[this.conversation.id()]);
-
         if (results.length < 20) {
           this.isNew = false;
         }
 
-        console.log('redrawing');
         this.loading = false;
         m.redraw();
       });

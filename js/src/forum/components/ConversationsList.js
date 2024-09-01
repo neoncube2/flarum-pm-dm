@@ -10,13 +10,13 @@ export default class ConversationsList extends Component {
     super.oninit(vnode);
 
     this.loading = true;
+    this.currentConversationId = vnode.attrs.currentConversationId;
 
     app.cache.conversations ??= [];
 
     app.store
       .find('neoncube-private-messages/conversations')
       .then((results) => {
-        console.log('loaded');
         delete results.payload;
         app.cache.conversations = results;
 
@@ -41,13 +41,9 @@ export default class ConversationsList extends Component {
   view(vnode) {
     // if (this.loading) return;
 
-    const isMobile = vnode.attrs.mobile;
-
     const conversations = app.cache.conversations;
 
-    if (this.currentConversation === null && conversations?.length > 0) {
-      this.currentConversation = conversations[0];
-    }
+    const currentConversation = this.currentConversationId == null ? null : conversations?.[this.currentConversationId];
 
     // This used to use app.session.user.conversations(). Not sure this makes sense, or if it makes sense to reload when opening the conversations dropdown?
     const hasConversations = conversations?.length > 0;
@@ -56,7 +52,7 @@ export default class ConversationsList extends Component {
 
     return (
       <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="ConversationsList">
-        <div style={isMobile ? 'margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
+        <div className="people-list" id="people-list">
           <Button onclick={() => this.showModal()} className="Button Button--primary" disabled={!app.forum.attribute('canMessage')}>
             {app.forum.attribute('canMessage')
               ? app.translator.trans('neoncube-private-messages.forum.chat.start')
@@ -70,12 +66,13 @@ export default class ConversationsList extends Component {
                     <UserListItem
                       conversation={conversation}
                       index={index}
-                      active={isMobile ? false : this.currentConversation === conversation}
+                      active={currentConversation === conversation}
                       onclick={(e) => {
-                        if (isMobile) {
+                        if (false/*isMobile*/) {
+                          // TODO: It might be nice to have real links shown if the screen is too small.
                           window.location.assign(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
                         } else {
-                          this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
+                          this.currentConversationId = $(e.currentTarget).attr('id');
 
                           redrawConversationsList();
                         }
@@ -88,8 +85,8 @@ export default class ConversationsList extends Component {
         </div>
 
         {
-          this.currentConversation && !isMobile &&
-          <ConversationView conversation={this.currentConversation} mobile={false} />
+          currentConversation &&
+          <ConversationView conversation={currentConversation} />
         }
       </div>
     );
@@ -116,6 +113,6 @@ export default class ConversationsList extends Component {
         this.loading = false;
 
         m.redraw();
-      })
+      });
   }
 }

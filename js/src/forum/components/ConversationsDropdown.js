@@ -18,7 +18,7 @@ export default class ConversationsDropdown extends NotificationsDropdown {
   }
 
   getMenu() {
-    return <form className={'Dropdown-menu ' + this.attrs.menuClassName}>{this.showing && <ConversationsList mobile={false} />}</form>;
+    return <form className={'Dropdown-menu ' + this.attrs.menuClassName}>{this.showing && <ConversationsList />}</form>;
   }
 
   goToRoute() {
