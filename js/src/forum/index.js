@@ -23,8 +23,8 @@ app.initializers.add('neoncube-private-messages', function (app) {
 
   app.notificationComponents.privateMessageReceived = PrivateMessageReceivedNotification;
 
-  app.routes.conversations = { path: '/neoncube-private-messages/conversations', component: ConversationsPage };
-  app.routes.messages = { path: '/neoncube-private-messages/messages/:id', component: ConversationViewPage };
+  app.routes.conversations = { path: '/conversations', component: ConversationsPage };
+  app.routes.messages = { path: '/messages/:id', component: ConversationViewPage };
 
   addConversationsDropdown();
 

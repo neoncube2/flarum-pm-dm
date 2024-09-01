@@ -22,7 +22,7 @@ export default class ConversationsDropdown extends NotificationsDropdown {
   }
 
   goToRoute() {
-    m.route(app.route('conversations'));
+    window.location.assign(app.route('conversations'));
   }
 
   getUnreadCount() {

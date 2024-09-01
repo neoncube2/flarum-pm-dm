@@ -12,13 +12,11 @@ import app from 'flarum/forum/app';
 
 export default class ConversationView extends Component {
   oninit(vnode) {
+    this.newMessageCount = 0;
     this.loading = true;
     this.vnode = vnode;
-    this.idParam = m.route.param('id');
     this.firstLoad = true;
-
     this.typingTimeout = true;
-
     this.sendTimeout = true;
 
     const typingTimeoutInterval = () => {
@@ -58,13 +56,23 @@ export default class ConversationView extends Component {
     this.typing = false;
 
     this.conversation ??= vnode.attrs.conversation;
-    this.initPost();
-  }
 
-  initPost() {
-    this.newMessageCount = 0;
+    m.redraw();
 
-    this.load();
+    app.cache.messages ??= [];
+
+    this.conversation.recipients().map((recipient) => {
+      if (parseInt(recipient.user().id()) !== parseInt(app.session.user.id())) {
+        this.user = recipient.user();
+        this.recipient = recipient;
+      } else {
+        this.meRecipient = recipient;
+      }
+    });
+
+    app.cache.messages[this.conversation.id()] ??= [];
+
+    this.getMessages();
 
     this.messageContent = Stream('');
 
@@ -165,7 +173,7 @@ export default class ConversationView extends Component {
 
         channels.user.bind('readMessage', (data) => {
           if (parseInt(data.conversationId) === parseInt(this.conversation.id())) {
-            this.recipient.lastRead = m.prop(data.number);
+            this.recipient.lastRead = Stream(data.number);
             m.redraw();
           }
         });
@@ -173,10 +181,11 @@ export default class ConversationView extends Component {
     }
   }
 
-  view() {
+  view(vnode) {
     const messages = app.cache.messages ? app.cache.messages[this.conversation.id()] : [];
+
     return (
-      <div style={this.idParam && this.isMobile() ? 'width: 100%' : ''} className="chat">
+      <div className="chat">
         <div className="chat-header clearfix">
           {avatar(this.user)}
 
@@ -204,37 +213,37 @@ export default class ConversationView extends Component {
                 )}
                 {messages
                   ? messages
-                      .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
-                      .sort((a, b) => {
-                        return a.createdAt() - b.createdAt();
-                      })
-                      .map((message, i) => {
-                        const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
-                        return (
-                          <li className="clearfix message-content">
-                            <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
-                              <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
-                                {avatar(myMessage ? app.session.user : message.user())}
-                              </div>
-                              <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
-                              <span className="message-data-time">{humanTime(message.createdAt())}</span>
+                    .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
+                    .sort((a, b) => {
+                      return a.createdAt() - b.createdAt();
+                    })
+                    .map((message, i) => {
+                      const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
+                      return (
+                        <li className="clearfix message-content">
+                          <div className={'message-data ' + (myMessage ? 'align-right' : '')}>
+                            <div className={'avatar-inline ' + (myMessage ? 'me' : 'other')}>
+                              {avatar(myMessage ? app.session.user : message.user())}
                             </div>
-                            <MessageText
-                              content={message.message()}
-                              className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
-                            />
-                            {myMessage ? (
-                              parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
-                                <span className="message-read">{icon('fas fa-check')}</span>
-                              ) : (
-                                ''
-                              )
+                            <span className="message-data-name">{username(myMessage ? app.session.user : message.user())}</span>
+                            <span className="message-data-time">{humanTime(message.createdAt())}</span>
+                          </div>
+                          <MessageText
+                            content={message.message()}
+                            className={'message ' + (myMessage ? 'my-message float-right' : 'other-message')}
+                          />
+                          {myMessage ? (
+                            parseInt(this.recipient.lastRead()) >= parseInt(message.data.attributes.number) ? (
+                              <span className="message-read">{icon('fas fa-check')}</span>
                             ) : (
                               ''
-                            )}
-                          </li>
-                        );
-                      })
+                            )
+                          ) : (
+                            ''
+                          )}
+                        </li>
+                      );
+                    })
                   : ''}
                 {this.messageContent() ? (
                   <li>
@@ -338,6 +347,7 @@ export default class ConversationView extends Component {
       .find('neoncube-private-messages/messages', this.conversation.id(), { offset })
       .then((results) => {
         delete results.payload;
+
         if (this.firstLoad) {
           const oldNumber = this.meRecipient.lastRead();
           app
@@ -370,34 +380,9 @@ export default class ConversationView extends Component {
         if (results.length < 20) {
           this.notNew = true;
         }
-      })
-      .then(() => {
+
         this.loading = false;
         m.redraw();
       });
-  }
-
-  load() {
-    this.loading = true;
-    m.redraw();
-
-    app.cache.messages ??= [];
-
-    this.conversation.recipients().map((recipient) => {
-      if (parseInt(recipient.user().id()) !== parseInt(app.session.user.id())) {
-        this.user = recipient.user();
-        this.recipient = recipient;
-      } else {
-        this.meRecipient = recipient;
-      }
-    });
-
-    app.cache.messages[this.conversation.id()] ??= [];
-
-    this.getMessages();
-  }
-
-  isMobile() {
-    return this.vnode.attrs.mobile;
   }
 }

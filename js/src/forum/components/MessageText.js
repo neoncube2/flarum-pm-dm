@@ -7,7 +7,7 @@ export default class MessageText extends Component {
     attrs.preview ??= false;
   }
 
-  view() {
+  view(vnode) {
     return <div className={this.attrs.className} />;
   }
 

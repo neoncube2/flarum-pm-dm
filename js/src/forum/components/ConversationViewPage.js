@@ -3,23 +3,23 @@ import Page from 'flarum/common/components/Page';
 import ConversationView from './ConversationView';
 
 export default class ConversationViewPage extends Page {
-  init() {
-    super.init();
-
-    app.history.push('conversations');
+  oninit(vnode) {
+    super.oninit(vnode);
 
     const idParam = m.route.param('id');
 
-    app.store.find('neoncube-private-messages/conversations', idParam).then((conversation) => {
-      app.cache.conversations = [conversation];
-      this.list = ConversationView.component({ conversation, mobile: true });
-      m.redraw();
-    });
+    app.store
+      .find('neoncube-private-messages/conversations', idParam)
+      .then((conversation) => {
+        app.cache.conversations = [conversation];
+        this.list = ConversationView.component({ conversation });
+        m.redraw();
+      });
 
     this.bodyClass = 'App--messages';
   }
 
-  view() {
+  view(vnode) {
     return (
       <div className="MessagesPage">
         <div className="ConversationsList">

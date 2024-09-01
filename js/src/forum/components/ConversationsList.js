@@ -7,12 +7,11 @@ import app from 'flarum/forum/app';
 
 export default class ConversationsList extends Component {
   oninit(vnode) {
-    this.mobile = vnode.attrs.mobile;
-    this.load();
+    this.load(vnode);
     this.loading = false;
   }
 
-  onupdate() {}
+  onupdate() { }
 
   onbeforeupdate() {
     const list = $('.ConversationsList-list');
@@ -24,8 +23,10 @@ export default class ConversationsList extends Component {
     });
   }
 
-  view() {
+  view(vnode) {
     if (this.loading) return;
+
+    const isMobile = vnode.attrs.mobile;
 
     const conversations = app.cache.conversations;
 
@@ -34,7 +35,7 @@ export default class ConversationsList extends Component {
     }
 
     if (this.currentConversation) {
-      this.conversationComponent = ConversationView.component({ conversation: this.currentConversation, mobile: this.mobile });
+      this.conversationComponent = ConversationView.component({ conversation: this.currentConversation, mobile: isMobile });
     }
 
     // This used to use app.session.user.conversations(). Not sure this makes sense, or if it makes sense to reload when opening the conversations dropdown?
@@ -44,7 +45,7 @@ export default class ConversationsList extends Component {
 
     return (
       <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="ConversationsList">
-        <div style={this.mobile ? 'margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
+        <div style={isMobile ? 'margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
           {Button.component(
             {
               onclick: this.showModal.bind(this),
@@ -63,10 +64,10 @@ export default class ConversationsList extends Component {
                     <UserListItem
                       conversation={conversation}
                       index={index}
-                      active={this.mobile ? false : this.currentConversation === conversation}
+                      active={isMobile ? false : this.currentConversation === conversation}
                       onclick={(e) => {
-                        if (this.mobile) {
-                          m.route(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
+                        if (isMobile) {
+                          window.location.assign(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
                         } else {
                           this.currentConversation = app.cache.conversations[$(e.currentTarget).attr('id')];
 
@@ -80,7 +81,7 @@ export default class ConversationsList extends Component {
           )}
         </div>
 
-        {!this.mobile && this.conversationComponent}
+        {!isMobile && this.conversationComponent}
       </div>
     );
   }
@@ -104,17 +105,19 @@ export default class ConversationsList extends Component {
           app.cache.conversations.push(result);
         });
       })
-      .catch(() => {})
+      .catch(() => { })
       .then(() => {
         this.loading = false;
         m.redraw();
       });
   }
 
-  load() {
-    if (app.cache.conversations && !this.mobile) return;
+  load(vnode) {
+    const isMobile = vnode.attrs.mobile;
 
-    if (this.mobile) app.cache.conversations = [];
+    if (app.cache.conversations && !isMobile) return;
+
+    if (isMobile) app.cache.conversations = [];
 
     this.loading = true;
     m.redraw();
@@ -125,7 +128,7 @@ export default class ConversationsList extends Component {
         delete results.payload;
         app.cache.conversations = results;
       })
-      .catch(() => {})
+      .catch(() => { })
       .then(() => {
         this.loading = false;
         m.redraw();

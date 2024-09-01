@@ -10,16 +10,16 @@ import withAttr from 'flarum/common/utils/withAttr';
 import app from 'flarum/forum/app';
 
 export default class RecipientSearch extends Search {
-  oninit(attrs) {
+  oninit(vnode) {
     this.value = Stream();
-    super.oninit(attrs);
+    super.oninit(vnode);
   }
 
   updateMaxHeight() {
     // stub
   }
 
-  view() {
+  view(vnode) {
     if (this.value == null) {
       this.value('');
     }

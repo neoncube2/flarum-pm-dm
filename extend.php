@@ -17,8 +17,8 @@ return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
         ->css(__DIR__ . '/resources/less/extension.less')
-        ->route('/neoncube-private-messages/messages/{id}', 'neoncube-private-messages.messages')
-        ->route('/neoncube-private-messages/conversations', 'neoncube-private-messages.conversation'),
+        ->route('/messages/{id}', 'neoncube-private-messages.messages')
+        ->route('/conversations', 'neoncube-private-messages.conversations'),
     new Extend\Locales(__DIR__ . '/resources/locale'),
     // (new Extend\Model(User::class))
     //     ->hasMany('conversations', ConversationUser::class, 'user_id'),

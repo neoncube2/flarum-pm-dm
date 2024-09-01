@@ -3,15 +3,7 @@ import Page from 'flarum/common/components/Page';
 import ConversationsList from './ConversationsList';
 
 export default class ConversationsPage extends Page {
-  oninit() {
-    super.oninit();
-
-    app.history.push('messages');
-
-    this.bodyClass = 'App--conversations';
-  }
-
-  view() {
+  view(vnode) {
     return (
       <div className="ConversationsPage">
         <ConversationsList mobile={true}></ConversationsList>
