@@ -18,6 +18,9 @@ export default class ConversationView extends Component {
     this.firstLoad = true;
     this.typingTimeout = true;
     this.sendTimeout = true;
+    this.typing = false;
+    this.messageContent = Stream('');
+    this.isNew = true;
 
     const typingTimeoutInterval = () => {
       this.typingTimeout = true;
@@ -53,13 +56,7 @@ export default class ConversationView extends Component {
     typingTimeoutInterval();
     typingInterval();
 
-    this.typing = false;
-
     this.conversation ??= vnode.attrs.conversation;
-
-    m.redraw();
-
-    app.cache.messages ??= [];
 
     this.conversation.recipients().map((recipient) => {
       if (parseInt(recipient.user().id()) !== parseInt(app.session.user.id())) {
@@ -69,52 +66,45 @@ export default class ConversationView extends Component {
         this.meRecipient = recipient;
       }
     });
-
+    app.cache.messages ??= [];
     app.cache.messages[this.conversation.id()] ??= [];
 
     this.getMessages();
-
-    this.messageContent = Stream('');
-
-    return new Promise(() => {
-      setTimeout(() => {
-        $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 1000);
-      }, 500);
-    });
   }
 
   onremove() {
     if (app.pusher) {
       app.pusher.then((object) => {
-        const channels = object.channels;
-        channels.user.unbind('typing');
-        channels.user.unbind('newMessage');
+        const user = object.channels.user;
+        user.unbind('typing');
+        user.unbind('newMessage');
       });
     }
   }
 
   onupdate() {
     $('.chat-history').scroll(() => {
-      if (!this.notNew) {
+      if (this.isNew) {
         const pos = $('.chat-history').scrollTop();
         if (pos === 0) {
           const firstMsg = $('.message-content:first');
           this.getMessages(app.cache.messages[this.conversation.id()].length);
-          if (!this.notNew) {
-            $('.chat-history').scrollTop(firstMsg.offset().top);
-          }
+
+          $('.chat-history').scrollTop(firstMsg.offset().top);
         }
       }
     });
   }
 
-  onbeforeupdate() {
+  oncreate() {
+    $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 1000);
+
     $('.UserListItem')
       .off('click')
       .on('click', (e) => {
         this.conversation = app.cache.conversations[$(e.currentTarget).attr('id')];
         this.index = $(e.currentTarget).attr('id');
-        this.notNew = false;
+        this.isNew = true;
         this.cipher = null;
         this.oninit(this.vnode);
         m.redraw();
@@ -130,9 +120,7 @@ export default class ConversationView extends Component {
           this.sendMessage();
         }
       });
-  }
 
-  oncreate() {
     if (app.pusher) {
       app.pusher.then((object) => {
         const channels = object.channels;
@@ -182,7 +170,11 @@ export default class ConversationView extends Component {
   }
 
   view(vnode) {
-    const messages = app.cache.messages ? app.cache.messages[this.conversation.id()] : [];
+    const messages = app.cache.messages[this.conversation.id()];
+
+    console.log('drawing');
+    console.log(messages);
+    console.log(this.loading);
 
     return (
       <div className="chat">
@@ -206,7 +198,7 @@ export default class ConversationView extends Component {
           [
             <div className="chat-history">
               <ul>
-                {this.notNew ? (
+                {!this.isNew ? (
                   <li className="startConvo">{app.translator.trans('neoncube-private-messages.forum.chat.start_of_conversation')}</li>
                 ) : (
                   ''
@@ -279,14 +271,9 @@ export default class ConversationView extends Component {
             rows="3"
           ></textarea>
 
-          {Button.component(
-            {
-              onclick: this.sendMessage.bind(this),
-              className: 'Button Button--primary',
-              disabled: !this.messageContent() || !this.sendTimeout,
-            },
-            app.translator.trans('neoncube-private-messages.forum.chat.send')
-          )}
+          <Button onclick={this.sendMessage.bind(this)} className="Button Button--primary" disabled={!this.messageContent() || !this.sendTimeout}>
+            {app.translator.trans('neoncube-private-messages.forum.chat.send')}
+          </Button>
         </form>
       </div>
     );
@@ -341,14 +328,19 @@ export default class ConversationView extends Component {
   }
 
   getMessages(offset = 0) {
-    if (this.notNew) return;
+    console.log('loading messages');
+    console.log(this.isNew);
+    if (!this.isNew) return;
+    console.log(offset);
 
     app.store
       .find('neoncube-private-messages/messages', this.conversation.id(), { offset })
       .then((results) => {
+        console.log(results);
         delete results.payload;
 
         if (this.firstLoad) {
+          console.log('first load');
           const oldNumber = this.meRecipient.lastRead();
           app
             .request({
@@ -369,18 +361,23 @@ export default class ConversationView extends Component {
                 app.session.user.pushAttributes({
                   unreadMessages,
                 });
-
-                m.redraw();
               }
 
               this.firstLoad = false;
+
+              m.redraw();
             });
         }
+
         app.cache.messages[this.conversation.id()].push(...results);
+
+        console.log(app.cache.messages[this.conversation.id()]);
+
         if (results.length < 20) {
-          this.notNew = true;
+          this.isNew = false;
         }
 
+        console.log('redrawing');
         this.loading = false;
         m.redraw();
       });

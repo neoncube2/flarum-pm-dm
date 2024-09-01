@@ -52,14 +52,9 @@ export default class StartConversationModal extends Modal {
                     placeholder={app.translator.trans('neoncube-private-messages.forum.chat.text_placeholder')}
                     rows="3"
                   />
-                  {Button.component(
-                    {
-                      type: 'submit',
-                      className: 'Button Button--primary',
-                      disabled: !this.messageContent(),
-                    },
-                    app.translator.trans('neoncube-private-messages.forum.modal.submit')
-                  )}
+                  <Button type="submit" className="Button Button--primary" disabled={!this.messageContent()}>
+                    {app.translator.trans('neoncube-private-messages.forum.modal.submit')}
+                  </Button>
                 </div>
               ) : (
                 ''

@@ -72,7 +72,7 @@ export default class RecipientSearch extends Search {
               }}
             >
               {!this.doSearch
-                ? LoadingIndicator.component({ size: 'tiny', className: 'Button Button--icon Button--link' })
+                ? <LoadingIndicator size="tiny" className="Button Button--icon Button--link" />
                 : this.sources.map((source) => source.view(this.value()))}
               <li>
                 <span>{app.translator.trans('neoncube-private-messages.forum.modal.more_users')}</span>

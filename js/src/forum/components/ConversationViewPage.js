@@ -11,8 +11,10 @@ export default class ConversationViewPage extends Page {
     app.store
       .find('neoncube-private-messages/conversations', idParam)
       .then((conversation) => {
+        this.conversation = conversation;
+
         app.cache.conversations = [conversation];
-        this.list = ConversationView.component({ conversation });
+
         m.redraw();
       });
 
@@ -23,7 +25,9 @@ export default class ConversationViewPage extends Page {
     return (
       <div className="MessagesPage">
         <div className="ConversationsList">
-          <div className="container clearfix">{this.list ? this.list : null}</div>
+          <div className="container clearfix">{
+            this.conversation ? <ConversationView conversation={this.conversation} /> : null}
+          </div>
         </div>
       </div>
     );

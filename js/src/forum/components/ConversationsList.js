@@ -7,13 +7,28 @@ import app from 'flarum/forum/app';
 
 export default class ConversationsList extends Component {
   oninit(vnode) {
-    this.load(vnode);
-    this.loading = false;
+    super.oninit(vnode);
+
+    this.loading = true;
+
+    app.cache.conversations ??= [];
+
+    app.store
+      .find('neoncube-private-messages/conversations')
+      .then((results) => {
+        console.log('loaded');
+        delete results.payload;
+        app.cache.conversations = results;
+
+        this.loading = false;
+
+        m.redraw()
+      })
   }
 
-  onupdate() { }
+  oncreate(vnode) {
+    super.oncreate(vnode);
 
-  onbeforeupdate() {
     const list = $('.ConversationsList-list');
 
     list.off('scroll').on('scroll', () => {
@@ -24,7 +39,7 @@ export default class ConversationsList extends Component {
   }
 
   view(vnode) {
-    if (this.loading) return;
+    // if (this.loading) return;
 
     const isMobile = vnode.attrs.mobile;
 
@@ -32,10 +47,6 @@ export default class ConversationsList extends Component {
 
     if (this.currentConversation === null && conversations?.length > 0) {
       this.currentConversation = conversations[0];
-    }
-
-    if (this.currentConversation) {
-      this.conversationComponent = ConversationView.component({ conversation: this.currentConversation, mobile: isMobile });
     }
 
     // This used to use app.session.user.conversations(). Not sure this makes sense, or if it makes sense to reload when opening the conversations dropdown?
@@ -46,16 +57,11 @@ export default class ConversationsList extends Component {
     return (
       <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="ConversationsList">
         <div style={isMobile ? 'margin: 0 auto; display: block;' : ''} className="people-list" id="people-list">
-          {Button.component(
-            {
-              onclick: this.showModal.bind(this),
-              className: 'Button Button--primary',
-              disabled: !app.forum.attribute('canMessage'),
-            },
-            app.forum.attribute('canMessage')
+          <Button onclick={() => this.showModal()} className="Button Button--primary" disabled={!app.forum.attribute('canMessage')}>
+            {app.forum.attribute('canMessage')
               ? app.translator.trans('neoncube-private-messages.forum.chat.start')
-              : app.translator.trans('neoncube-private-messages.forum.chat.cant_start')
-          )}
+              : app.translator.trans('neoncube-private-messages.forum.chat.cant_start')}
+          </Button>
           {hasConversations && (
             <ul className="ConversationsList-list">
               {Array.isArray(conversations) &&
@@ -81,7 +87,10 @@ export default class ConversationsList extends Component {
           )}
         </div>
 
-        {!isMobile && this.conversationComponent}
+        {
+          this.currentConversation && !isMobile &&
+          <ConversationView conversation={this.currentConversation} mobile={false} />
+        }
       </div>
     );
   }
@@ -93,9 +102,8 @@ export default class ConversationsList extends Component {
     });
   }
 
-  loadMore() {
+  async loadMore() {
     this.loading = true;
-    m.redraw();
 
     app.store
       .find('neoncube-private-messages/conversations', { offset: app.cache.conversations.length })
@@ -104,34 +112,10 @@ export default class ConversationsList extends Component {
         results.map((result) => {
           app.cache.conversations.push(result);
         });
-      })
-      .catch(() => { })
-      .then(() => {
+
         this.loading = false;
+
         m.redraw();
-      });
-  }
-
-  load(vnode) {
-    const isMobile = vnode.attrs.mobile;
-
-    if (app.cache.conversations && !isMobile) return;
-
-    if (isMobile) app.cache.conversations = [];
-
-    this.loading = true;
-    m.redraw();
-
-    app.store
-      .find('neoncube-private-messages/conversations')
-      .then((results) => {
-        delete results.payload;
-        app.cache.conversations = results;
       })
-      .catch(() => { })
-      .then(() => {
-        this.loading = false;
-        m.redraw();
-      });
   }
 }
