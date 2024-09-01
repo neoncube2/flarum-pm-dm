@@ -19,7 +19,7 @@ class MessageSerializer extends AbstractSerializer
         }
 
         return [
-            'message' => (bool) !$message->is_hidden ? $message->message : '', //Todo Add translator,
+            'message' => (bool) !$message->is_hidden ? $message->message : '',
             'userId' => $message->user_id,
             'isHidden' => $message->is_hidden,
             'createdAt' => $this->formatDate($message->created_at),

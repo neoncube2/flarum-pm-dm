@@ -20,7 +20,7 @@ Private messages (PM's) are also known as "direct messages" (DM's). (e.g. "Send 
 
 ## Links
 
-- [Report an issue via Flarum forums](https://github.com/neoncube2/flarum-private-messages/issues)
+- [Report an issue via Flarum forums](https://discuss.flarum.org/d/35388-private-messages)
 - [Report an issue via Github](https://github.com/neoncube2/flarum-private-messages/issues)
 
 ## Credits
