@@ -63,7 +63,7 @@ export default class UserListItem extends Component {
     if (!this.user) return null;
 
     return (
-      <li id={vnode.attrs.index} className={vnode.attrs.active ? 'UserListItem active' : 'UserListItem'} onclick={vnode.attrs.onclick}>
+      <li className={vnode.attrs.active ? 'UserListItem active' : 'UserListItem'} onclick={vnode.attrs.onclick}>
         <div className="UserListItem-content">
           {avatar(this.user)}
           <div className="info">

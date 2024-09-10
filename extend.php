@@ -61,7 +61,7 @@ return [
     // (new Extend\ApiController(Controller\UpdateUserController::class))
     //     ->addInclude('conversations'),
     (new Extend\Notification())
-        ->type(NewPrivateMessageBlueprint::class, MessageSerializer::class, ['alert', 'email']),
+        ->type(NewPrivateMessageBlueprint::class, MessageSerializer::class, ['email']),
     (new Extend\View)
         ->namespace('flarum-private-messages', __DIR__.'/views'),
 ];

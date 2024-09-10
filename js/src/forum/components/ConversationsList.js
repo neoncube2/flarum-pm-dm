@@ -39,16 +39,12 @@ export default class ConversationsList extends Component {
   }
 
   view(vnode) {
-    // if (this.loading) return;
-
     const conversations = app.cache.conversations;
 
-    const currentConversation = this.currentConversationId == null ? null : conversations?.[this.currentConversationId];
+    const currentConversation = conversations?.find(conversation => conversation.data.id === this.currentConversationId);
 
     // This used to use app.session.user.conversations(). Not sure this makes sense, or if it makes sense to reload when opening the conversations dropdown?
     const hasConversations = conversations?.length > 0;
-
-    const redrawConversationsList = () => m.redraw();
 
     return (
       <div style={hasConversations ? '' : 'width: unset; padding: 10px;'} className="ConversationsList">
@@ -61,20 +57,17 @@ export default class ConversationsList extends Component {
           {hasConversations && (
             <ul className="ConversationsList-list">
               {Array.isArray(conversations) &&
-                conversations.map((conversation, index) => {
+                conversations.map(conversation => {
                   return (
                     <UserListItem
                       conversation={conversation}
-                      index={index}
                       active={currentConversation === conversation}
                       onclick={(e) => {
                         if (false/*isMobile*/) {
                           // TODO: It might be nice to have real links shown if the screen is too small.
                           window.location.assign(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
                         } else {
-                          this.currentConversationId = $(e.currentTarget).attr('id');
-
-                          redrawConversationsList();
+                          this.currentConversationId = conversation.data.id;
                         }
                       }}
                     />

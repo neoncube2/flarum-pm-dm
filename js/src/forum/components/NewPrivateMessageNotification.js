@@ -1,5 +1,4 @@
 import Notification from 'flarum/forum/components/Notification';
-// import username from 'flarum/common/helpers/username';
 
 export default class NewPrivateMessageNotification extends Notification {
   icon() {
@@ -8,13 +7,19 @@ export default class NewPrivateMessageNotification extends Notification {
 
   href() {
     const notification = this.attrs.notification;
-    const discussion = notification.subject();
-    const content = notification.content() ?? {};
 
-    return app.route.discussion(discussion, content.postNumber);
+    const message = notification.subject();
+
+    return app.route('messages', { id: message.data.attributes.conversationId }/*, message.number*/);
   }
 
   content() {
-    return app.translator.trans('neoncube-private-messages.forum.notifications.new_private_message', { user: this.attrs.notification.fromUser() });
+    const fromUser = this.attrs.notification.fromUser();
+
+    // // From https://github.com/flarum/framework/blob/main/framework/core/js/src/common/helpers/username.tsx#L9
+    // // The Flarum username() function expects displayName() to be a function, and it outputs a <span>, which I don't think is what we want.
+    const username = (fromUser && fromUser.data.attributes.displayName) || app.translator.trans('core.lib.username.deleted_text');
+
+    return app.translator.trans('neoncube-private-messages.forum.notifications.web.new_private_message.body', { 'fromUser': username });
   }
 }
