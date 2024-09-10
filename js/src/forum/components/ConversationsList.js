@@ -79,7 +79,7 @@ export default class ConversationsList extends Component {
 
         {
           currentConversation &&
-          <ConversationView conversation={currentConversation} />
+          [<ConversationView key={currentConversation.id()} conversation={currentConversation} />]
         }
       </div>
     );

@@ -17,6 +17,7 @@ export default class ConversationView extends Component {
     this.vnode = vnode;
     this.firstLoad = true;
     this.typingTimeout = true;
+    this.isSending = false;
     this.sendTimeout = true;
     this.typing = false;
     this.messageContent = Stream('');
@@ -98,28 +99,6 @@ export default class ConversationView extends Component {
 
   oncreate() {
     $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 1000);
-
-    $('.UserListItem')
-      .off('click')
-      .on('click', (e) => {
-        this.conversation = app.cache.conversations[$(e.currentTarget).attr('id')];
-        this.index = $(e.currentTarget).attr('id');
-        this.isNew = true;
-        this.cipher = null;
-        this.oninit(this.vnode);
-        m.redraw();
-      });
-
-    $('#MessageTextArea')
-      .off()
-      .on('keydown', (e) => {
-        console.log(app.forum);
-
-        if (e.keyCode === 13 && app.forum.attribute('neoncubePrivateMessagesReturnKey')) {
-          $('#MessageTextArea').prop('disabled', true);
-          this.sendMessage();
-        }
-      });
 
     if (app.pusher) {
       app.pusher.then((object) => {
@@ -265,7 +244,12 @@ export default class ConversationView extends Component {
             oninput={withAttr('value', this.typingPush.bind(this))}
             placeholder={app.translator.trans('neoncube-private-messages.forum.chat.text_placeholder')}
             rows="3"
-          ></textarea>
+            disabled={this.isSending && !this.sendTimeout}
+            onkeydown={e => {
+              if (e.keyCode === 13 && app.forum.attribute('neoncubePrivateMessagesReturnKey')) {
+                this.sendMessage();
+              }
+            }} />
 
           <Button onclick={this.sendMessage.bind(this)} className="Button Button--primary" disabled={!this.messageContent() || !this.sendTimeout}>
             {app.translator.trans('neoncube-private-messages.forum.chat.send')}
@@ -297,10 +281,12 @@ export default class ConversationView extends Component {
   sendMessage() {
     if (!this.sendTimeout || this.messageContent() === '' || !this.messageContent().replace(/\s/g, '').length) return;
 
+    this.isSending = true;
     this.sendTimeout = false;
     this.timer = 1;
     this.sendTimeoutInterval();
     this.newMessageCount++;
+
     app.store
       .createRecord('messages')
       .save({
@@ -311,7 +297,10 @@ export default class ConversationView extends Component {
         app.cache.messages[this.conversation.id()].push(message);
         m.redraw();
         this.messageContent('');
+        this.isSending = false;
         $('.chat-history').animate({ scrollTop: $('.chat-history').prop('scrollHeight') }, 500);
+
+        // TODO: Can this be done when the message is created?
         app.request({
           method: 'POST',
           url: app.forum.attribute('apiUrl') + '/neoncube-private-messages/messages/read',
