@@ -39,6 +39,10 @@ return [
         ->attribute('canMessage', function (ForumSerializer $serializer) {
             return $serializer->getActor()->can('startConversation');
         }),
+    (new Extend\ApiSerializer(ForumSerializer::class))
+        ->attribute('neoncubePrivateMessagesAllowUsersToReceiveEmailNotifications', function (ForumSerializer $serializer) {
+            return $serializer->getActor()->can('neoncube-private-messages.allowUsersToReceiveEmailNotifications');
+        }),
 
     (new Extend\ApiSerializer(CurrentUserSerializer::class))
         ->attribute('unreadMessages', function (CurrentUserSerializer $serializer) {

@@ -8,7 +8,6 @@ import ConversationUser from './models/ConversationUser';
 import User from 'flarum/common/models/User';
 import Model from 'flarum/common/Model';
 import ConversationsPage from './components/ConversationsPage';
-import ConversationViewPage from './components/ConversationViewPage';
 import NewPrivateMessageNotification from './components/NewPrivateMessageNotification';
 import Stream from 'flarum/common/utils/Stream';
 import addConversationsDropdown from './addConversationsDropdown';
@@ -54,6 +53,9 @@ app.initializers.add('neoncube-private-messages', (app) => {
   });
 
   extend(NotificationGrid.prototype, 'notificationTypes', (items) => {
+    if (!app.forum.attribute('neoncubePrivateMessagesAllowUsersToReceiveEmailNotifications'))
+      return;
+
     items.add('newPrivateMessage', {
       name: 'newPrivateMessage',
       icon: 'fas fa-comment-alt',

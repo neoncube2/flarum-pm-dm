@@ -33,25 +33,25 @@ class NewMessageHandler
             $conversation = Conversation::find($data['attributes']['conversationId']);
         }
 
-        if (!$conversation->recipients()->where('user_id', $actor->id)->get()) {
+        if (!$conversation->recipients()->where('user_id', $actor->id)->get())
             throw new PermissionDeniedException;
-        }
-
-        $message = Message::newMessage($data['attributes']['messageContents'], $actor->id,
-            $conversation->id);
 
         $conversation->increment('total_messages');
 
-        $message->number = $conversation->total_messages;
+        $message = Message::newMessage($data['attributes']['messageContents'], $actor->id, $conversation->id);
 
+        $message->number = $conversation->total_messages;
         $message->save();
 
         foreach (ConversationUser::where('conversation_id', $conversation->id)->pluck('user_id')->all() as $userId) {
+            if($userId === $actor->id)
+                continue;
+
             $recipient = User::find($userId);
-            
+
             $recipient->increment('unread_messages');
 
-            $this->pushNewMessage($message, $conversation->id,);
+            $this->pushNewMessage($message, $conversation->id);
             $this->sendNewMessageNotification($message, $conversation, $actor, $recipient);
         }
 
@@ -71,6 +71,9 @@ class NewMessageHandler
     }
 
     public function sendNewMessageNotification($message, $conversation, $actor, $recipient) {
+        if(!$recipient->can('neoncube-private-messages.allowUsersToReceiveEmailNotifications'))
+            return;
+
         $this->notifications->sync(
             new NewPrivateMessageBlueprint($message, $conversation, $actor),
             [$recipient]

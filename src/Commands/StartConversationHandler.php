@@ -24,9 +24,8 @@ class StartConversationHandler
 
         $actor->assertCan('startConversation');
 
-        if (intval($data['attributes']['recipient']) === intval($actor->id)) {
+        if (intval($data['attributes']['recipient']) === intval($actor->id))
             throw new InvalidArgumentException;
-        }
 
         $conversationIds = ConversationUser::where('user_id', $actor->id)
             ->pluck('conversation_id')

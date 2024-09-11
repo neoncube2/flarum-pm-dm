@@ -15,5 +15,13 @@ app.initializers.add('neoncube-private-messages', () => {
         permission: 'startConversation',
       },
       'start'
+    )
+    .registerPermission(
+      {
+        icon: 'fas fa-user-lock',
+        label: app.translator.trans('neoncube-private-messages.admin.permissions.allow_users_to_receive_email_notifications'),
+        permission: 'neoncube-private-messages.allowUsersToReceiveEmailNotifications',
+      },
+      'start'
     );
 });

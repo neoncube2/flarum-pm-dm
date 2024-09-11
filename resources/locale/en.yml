@@ -2,9 +2,9 @@ neoncube-private-messages:
   admin:
     settings:
       return_key: Return key sends message
-      title: Whisper Settings
     permissions:
       start_label: Start private conversations
+      allow_users_to_receive_email_notifications: Allow users to receive email notifications when they receive a private message
   forum:
     dropdown:
       tooltip: Conversations
