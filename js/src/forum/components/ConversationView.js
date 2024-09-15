@@ -180,10 +180,8 @@ export default class ConversationView extends Component {
                 )}
                 {messages
                   ? messages
-                    .filter((message, index, self) => index === self.findIndex((t) => t.message() === message.message()))
-                    .sort((a, b) => {
-                      return a.createdAt() - b.createdAt();
-                    })
+                    // .filter((message, index, self) => index === self.findIndex(t => t.message() === message.message()))
+                    .sort((a, b) => a.createdAt() - b.createdAt())
                     .map((message, i) => {
                       const myMessage = parseInt(message.user().id()) === parseInt(app.session.user.id());
                       return (
