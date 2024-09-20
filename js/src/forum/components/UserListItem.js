@@ -1,21 +1,10 @@
 import Component from 'flarum/common/Component';
-import avatar from 'flarum/common/helpers/avatar';
-import username from 'flarum/common/helpers/username';
-import userOnline from 'flarum/common/helpers/userOnline';
 import app from 'flarum/forum/app';
+import UserListItemContent from './UserListItemContent';
 
 export default class UserListItem extends Component {
   oninit(vnode) {
     this.conversation = vnode.attrs.conversation;
-    this.user = null;
-
-    const userId = parseInt(app.session.user.id());
-
-    this.user = this.conversation
-      .recipients()
-      .find((recipient) => parseInt(recipient.user().id()) !== userId)
-      ?.user();
-    m.redraw();
 
     const typingInterval = () => {
       if (this.typingTime < new Date(Date.now() - 6000)) {
@@ -60,23 +49,10 @@ export default class UserListItem extends Component {
   }
 
   view(vnode) {
-    if (!this.user) return null;
-
     return (
-      <li className={vnode.attrs.active ? 'UserListItem active' : 'UserListItem'} onclick={vnode.attrs.onclick}>
-        <div className="UserListItem-content">
-          {avatar(this.user)}
-          <div className="info">
-            {username(this.user)}
-            {userOnline(this.user)}
-          </div>
-          {this.typing && (
-            <div className="tiblock">
-              <div className="tidot"></div>
-            </div>
-          )}
-        </div>
-      </li>
+      <div className={vnode.attrs.active ? 'UserListItem active' : 'UserListItem'} onclick={vnode.attrs.onclick}>
+        <UserListItemContent conversation={this.conversation} typing={this.typing} />
+      </div>
     );
   }
 }

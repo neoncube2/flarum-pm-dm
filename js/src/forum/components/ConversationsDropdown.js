@@ -12,17 +12,10 @@ export default class ConversationsDropdown extends NotificationsDropdown {
   }
 
   onclick() {
-    if (app.drawer.isOpen()) {
-      this.goToRoute();
-    }
   }
 
   getMenu() {
     return <form className={'Dropdown-menu ' + this.attrs.menuClassName}>{this.showing && <ConversationsList />}</form>;
-  }
-
-  goToRoute() {
-    window.location.assign(app.route('conversations'));
   }
 
   getUnreadCount() {

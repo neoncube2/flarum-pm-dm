@@ -1,9 +1,11 @@
+import app from 'flarum/forum/app';
 import Button from 'flarum/common/components/Button';
+import Link from 'flarum/common/components/Link';
 import Component from 'flarum/common/Component';
 import ConversationView from './ConversationView';
 import UserListItem from './UserListItem';
 import StartConversationModal from './StartConversationModal';
-import app from 'flarum/forum/app';
+import UserListItemContent from './UserListItemContent';
 
 export default class ConversationsList extends Component {
   oninit(vnode) {
@@ -54,27 +56,37 @@ export default class ConversationsList extends Component {
               ? app.translator.trans('neoncube-private-messages.forum.chat.start')
               : app.translator.trans('neoncube-private-messages.forum.chat.cant_start')}
           </Button>
-          {hasConversations && (
-            <ul className="ConversationsList-list">
-              {Array.isArray(conversations) &&
+          {
+            hasConversations &&
+            <div className="ConversationsList-list mobile">
+              {
+                conversations.map(conversation => {
+                  return (
+                    <Link className="UserListItem" href={(app.route('messages', { id: conversation.data.id }))}>
+                      <UserListItemContent conversation={conversation} />
+                    </Link>
+                  );
+                })
+              }
+            </div>
+          }
+
+          {
+            hasConversations &&
+            <div className="ConversationsList-list desktop">
+              {
                 conversations.map(conversation => {
                   return (
                     <UserListItem
                       conversation={conversation}
                       active={currentConversation === conversation}
-                      onclick={(e) => {
-                        if (false/*isMobile*/) {
-                          // TODO: It might be nice to have real links shown if the screen is too small.
-                          window.location.assign(app.route('messages', { id: app.cache.conversations[$(e.currentTarget).attr('id')].id() }));
-                        } else {
-                          this.currentConversationId = conversation.data.id;
-                        }
-                      }}
+                      onclick={(e) => this.currentConversationId = conversation.data.id}
                     />
                   );
-                })}
-            </ul>
-          )}
+                })
+              }
+            </div>
+          }
         </div>
 
         {

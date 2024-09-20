@@ -153,7 +153,7 @@ export default class ConversationView extends Component {
 
     return (
       <div className="chat">
-        <div className="chat-header clearfix">
+        <div className="chat-header">
           {avatar(this.user)}
 
           <div className="chat-about">
