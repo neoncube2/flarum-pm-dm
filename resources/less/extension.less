@@ -570,7 +570,7 @@
     // }
   }
 
-  .ConversationsPage .people-list {
+  .ConversationsPage.viewing-conversation .people-list {
     display: none;
   }
 
@@ -598,7 +598,8 @@
   }
 }
 
-.App-header .ConversationsList-list a {
+.App-header .ConversationsList-list a,
+.ConversationsPage .ConversationsList-list a {
   color: var(--text-color);
 }
 

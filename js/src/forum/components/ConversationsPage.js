@@ -13,7 +13,7 @@ export default class ConversationsPage extends Page {
 
   view(vnode) {
     return (
-      <div className="ConversationsPage">
+      <div className={this.currentConversationId != null ? 'ConversationsPage viewing-conversation' : 'ConversationsPage'}>
         <ConversationsList currentConversationId={this.currentConversationId} />
       </div>
     );
